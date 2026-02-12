@@ -1773,24 +1773,17 @@
             </div>
 
             <div class="config-content" id="configContent">
-                <!-- API Keys Section -->
+                <!-- Hevy Integration Section -->
                 <div class="config-section">
-                    <h3>🔑 API Keys</h3>
+                    <h3>💪 Hevy Integration</h3>
                     <p style="color: var(--text-secondary); font-size: 0.9em; margin-bottom: 20px;">
-                        Configure your API keys for AI generation and Hevy integration.
-                        <strong>Keys are stored locally and never shared.</strong>
+                        Configure your Hevy API key to publish generated workouts directly to your Hevy app.
+                        <strong>Required for workout publishing.</strong>
                     </p>
                     <div class="config-grid">
                         <div class="config-field" style="grid-column: 1 / -1;">
-                            <label for="anthropicApiKey">
-                                <span>Anthropic API Key (for AI workout generation)</span>
-                                <span class="default-value">Get from: console.anthropic.com</span>
-                            </label>
-                            <input type="password" id="anthropicApiKey" placeholder="sk-ant-...">
-                        </div>
-                        <div class="config-field" style="grid-column: 1 / -1;">
                             <label for="hevyApiKey">
-                                <span>Hevy API Key (for publishing workouts)</span>
+                                <span>Hevy API Key</span>
                                 <span class="default-value">Get from: hevyapp.com/developers</span>
                             </label>
                             <input type="password" id="hevyApiKey" placeholder="Your Hevy API key">
@@ -1798,27 +1791,152 @@
                     </div>
                 </div>
 
-                <!-- AI Proxy Settings -->
+                <!-- AI Backend Services Section -->
                 <div class="config-section">
-                    <h3>🔌 AI Proxy Configuration</h3>
+                    <h3>🤖 AI Backend Services</h3>
                     <p style="color: var(--text-secondary); font-size: 0.9em; margin-bottom: 20px;">
-                        Configure a local proxy to access your AI backend.
-                        <strong>Leave empty to use direct Anthropic API connection.</strong>
+                        Configure one of the following AI services for workout generation.
+                        <strong>Only one service needs to be configured.</strong> All keys are stored locally and never shared.
                     </p>
-                    <div class="config-grid">
+
+                    <!-- Provider Selection -->
+                    <div class="config-grid" style="margin-bottom: 20px;">
                         <div class="config-field" style="grid-column: 1 / -1;">
-                            <label for="proxyUrl">
-                                <span>AI Proxy URL</span>
-                                <span class="default-value">Example: http://localhost:8080/api</span>
+                            <label for="aiProvider">
+                                <span>Select AI Provider</span>
+                                <span class="default-value">Choose your preferred AI service</span>
                             </label>
-                            <input type="text" id="proxyUrl" placeholder="http://your-proxy-url">
+                            <select id="aiProvider" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--bg-primary); color: var(--text-primary); font-size: 1em;">
+                                <option value="">-- Select AI Provider --</option>
+                                <option value="anthropic">Anthropic Claude</option>
+                                <option value="openai">OpenAI GPT</option>
+                                <option value="gemini">Google Gemini</option>
+                                <option value="azure">Azure OpenAI</option>
+                                <option value="proxy">Custom Proxy</option>
+                            </select>
                         </div>
-                        <div class="config-field" style="grid-column: 1 / -1;">
-                            <label for="proxyApiKey">
-                                <span>AI Proxy API Key</span>
-                                <span class="default-value">Authentication key for your proxy</span>
-                            </label>
-                            <input type="password" id="proxyApiKey" placeholder="Your proxy API key">
+                    </div>
+
+                    <!-- Anthropic Configuration -->
+                    <div id="anthropicConfig" class="ai-provider-config" style="display: none; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 10px;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 15px;">🔷 Anthropic Claude Configuration</h4>
+                        <div class="config-grid">
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="anthropicApiKey">
+                                    <span>Anthropic API Key</span>
+                                    <span class="default-value">Get from: console.anthropic.com</span>
+                                </label>
+                                <input type="password" id="anthropicApiKey" placeholder="sk-ant-api03-...">
+                            </div>
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="anthropicModel">
+                                    <span>Model</span>
+                                    <span class="default-value">Default: claude-opus-4-6</span>
+                                </label>
+                                <select id="anthropicModel" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--bg-primary); color: var(--text-primary); font-size: 1em;">
+                                    <option value="claude-opus-4-6">Claude Opus 4.6 (Most Capable)</option>
+                                    <option value="claude-sonnet-4">Claude Sonnet 4 (Balanced)</option>
+                                    <option value="claude-haiku-4">Claude Haiku 4 (Fast)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OpenAI Configuration -->
+                    <div id="openaiConfig" class="ai-provider-config" style="display: none; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 10px;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 15px;">🟢 OpenAI GPT Configuration</h4>
+                        <div class="config-grid">
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="openaiApiKey">
+                                    <span>OpenAI API Key</span>
+                                    <span class="default-value">Get from: platform.openai.com/api-keys</span>
+                                </label>
+                                <input type="password" id="openaiApiKey" placeholder="sk-...">
+                            </div>
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="openaiModel">
+                                    <span>Model</span>
+                                    <span class="default-value">Default: gpt-4-turbo</span>
+                                </label>
+                                <select id="openaiModel" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--bg-primary); color: var(--text-primary); font-size: 1em;">
+                                    <option value="gpt-4-turbo">GPT-4 Turbo (Most Capable)</option>
+                                    <option value="gpt-4">GPT-4 (Standard)</option>
+                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast & Affordable)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google Gemini Configuration -->
+                    <div id="geminiConfig" class="ai-provider-config" style="display: none; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 10px;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 15px;">🔶 Google Gemini Configuration</h4>
+                        <div class="config-grid">
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="geminiApiKey">
+                                    <span>Google Gemini API Key</span>
+                                    <span class="default-value">Get from: makersuite.google.com/app/apikey</span>
+                                </label>
+                                <input type="password" id="geminiApiKey" placeholder="AIza...">
+                            </div>
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="geminiModel">
+                                    <span>Model</span>
+                                    <span class="default-value">Default: gemini-pro</span>
+                                </label>
+                                <select id="geminiModel" style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--bg-primary); color: var(--text-primary); font-size: 1em;">
+                                    <option value="gemini-pro">Gemini Pro (Balanced)</option>
+                                    <option value="gemini-ultra">Gemini Ultra (Most Capable)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Azure OpenAI Configuration -->
+                    <div id="azureConfig" class="ai-provider-config" style="display: none; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 10px;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 15px;">☁️ Azure OpenAI Configuration</h4>
+                        <div class="config-grid">
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="azureApiKey">
+                                    <span>Azure OpenAI API Key</span>
+                                    <span class="default-value">Get from: portal.azure.com</span>
+                                </label>
+                                <input type="password" id="azureApiKey" placeholder="Your Azure API key">
+                            </div>
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="azureEndpoint">
+                                    <span>Azure Endpoint</span>
+                                    <span class="default-value">Example: https://your-resource.openai.azure.com</span>
+                                </label>
+                                <input type="text" id="azureEndpoint" placeholder="https://your-resource.openai.azure.com">
+                            </div>
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="azureDeployment">
+                                    <span>Deployment Name</span>
+                                    <span class="default-value">Your Azure OpenAI deployment name</span>
+                                </label>
+                                <input type="text" id="azureDeployment" placeholder="gpt-4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Proxy Configuration -->
+                    <div id="proxyConfig" class="ai-provider-config" style="display: none; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 10px;">
+                        <h4 style="color: var(--accent-color); margin-bottom: 15px;">🔌 Custom Proxy Configuration</h4>
+                        <div class="config-grid">
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="proxyUrl">
+                                    <span>Proxy URL</span>
+                                    <span class="default-value">Example: http://localhost:8080/api</span>
+                                </label>
+                                <input type="text" id="proxyUrl" placeholder="http://your-proxy-url">
+                            </div>
+                            <div class="config-field" style="grid-column: 1 / -1;">
+                                <label for="proxyApiKey">
+                                    <span>Proxy API Key</span>
+                                    <span class="default-value">Authentication key for your proxy (optional)</span>
+                                </label>
+                                <input type="password" id="proxyApiKey" placeholder="Your proxy API key">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2425,7 +2543,30 @@
             }
             loadStats();
             loadConfiguration();
+            setupAIProviderSelector();
         });
+
+        // AI Provider Selection Handler
+        function setupAIProviderSelector() {
+            const selector = document.getElementById('aiProvider');
+            if (!selector) return;
+
+            selector.addEventListener('change', function() {
+                // Hide all provider configs
+                document.querySelectorAll('.ai-provider-config').forEach(el => {
+                    el.style.display = 'none';
+                });
+
+                // Show selected provider config
+                const provider = this.value;
+                if (provider) {
+                    const configElement = document.getElementById(provider + 'Config');
+                    if (configElement) {
+                        configElement.style.display = 'block';
+                    }
+                }
+            });
+        }
 
         async function loadStats() {
             try {
@@ -2657,6 +2798,57 @@
                     document.getElementById('proxyApiKey').value = config.proxyApiKey;
                 }
 
+                // Populate AI provider selection and configurations
+                if (config.aiProvider) {
+                    document.getElementById('aiProvider').value = config.aiProvider;
+                    // Trigger change event to show the right config section
+                    document.getElementById('aiProvider').dispatchEvent(new Event('change'));
+                }
+
+                // OpenAI
+                if (config.openaiApiKey) {
+                    if (config.openaiApiKey.startsWith('***')) {
+                        document.getElementById('openaiApiKey').placeholder = 'Key configured (' + config.openaiApiKey + ')';
+                    } else {
+                        document.getElementById('openaiApiKey').value = config.openaiApiKey;
+                    }
+                }
+                if (config.openaiModel) {
+                    document.getElementById('openaiModel').value = config.openaiModel;
+                }
+
+                // Gemini
+                if (config.geminiApiKey) {
+                    if (config.geminiApiKey.startsWith('***')) {
+                        document.getElementById('geminiApiKey').placeholder = 'Key configured (' + config.geminiApiKey + ')';
+                    } else {
+                        document.getElementById('geminiApiKey').value = config.geminiApiKey;
+                    }
+                }
+                if (config.geminiModel) {
+                    document.getElementById('geminiModel').value = config.geminiModel;
+                }
+
+                // Azure
+                if (config.azureApiKey) {
+                    if (config.azureApiKey.startsWith('***')) {
+                        document.getElementById('azureApiKey').placeholder = 'Key configured (' + config.azureApiKey + ')';
+                    } else {
+                        document.getElementById('azureApiKey').value = config.azureApiKey;
+                    }
+                }
+                if (config.azureEndpoint) {
+                    document.getElementById('azureEndpoint').value = config.azureEndpoint;
+                }
+                if (config.azureDeployment) {
+                    document.getElementById('azureDeployment').value = config.azureDeployment;
+                }
+
+                // Anthropic model
+                if (config.anthropicModel) {
+                    document.getElementById('anthropicModel').value = config.anthropicModel;
+                }
+
                 // Populate form fields and default value labels
                 document.getElementById('apiTimeout').value = config.hevy.timeout || 30000;
                 document.getElementById('defaultApiTimeout').textContent = `Default: ${config.hevy.timeout || 30000}`;
@@ -2770,10 +2962,33 @@
                 }
 
                 const updatedConfig = {
+                    // AI Provider Configuration
+                    aiProvider: document.getElementById('aiProvider').value.trim(),
+
+                    // Anthropic
                     anthropicApiKey: document.getElementById('anthropicApiKey').value.trim(),
-                    hevyApiKey: document.getElementById('hevyApiKey').value.trim(),
+                    anthropicModel: document.getElementById('anthropicModel').value,
+
+                    // OpenAI
+                    openaiApiKey: document.getElementById('openaiApiKey').value.trim(),
+                    openaiModel: document.getElementById('openaiModel').value,
+
+                    // Gemini
+                    geminiApiKey: document.getElementById('geminiApiKey').value.trim(),
+                    geminiModel: document.getElementById('geminiModel').value,
+
+                    // Azure
+                    azureApiKey: document.getElementById('azureApiKey').value.trim(),
+                    azureEndpoint: document.getElementById('azureEndpoint').value.trim(),
+                    azureDeployment: document.getElementById('azureDeployment').value.trim(),
+
+                    // Proxy
                     proxyUrl: document.getElementById('proxyUrl').value.trim(),
                     proxyApiKey: document.getElementById('proxyApiKey').value.trim(),
+
+                    // Hevy
+                    hevyApiKey: document.getElementById('hevyApiKey').value.trim(),
+
                     hevy: {
                         timeout: parseInt(document.getElementById('apiTimeout').value),
                         retries: parseInt(document.getElementById('apiRetries').value),

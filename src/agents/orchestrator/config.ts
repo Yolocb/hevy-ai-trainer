@@ -16,10 +16,33 @@ export interface AppConfig {
     pageSize: number;
   };
   training: TrainingConfig;
+
+  // AI Provider Selection
+  aiProvider?: string;
+
+  // Anthropic
   anthropicApiKey?: string;
-  hevyApiKey?: string;
+  anthropicModel?: string;
+
+  // OpenAI
+  openaiApiKey?: string;
+  openaiModel?: string;
+
+  // Google Gemini
+  geminiApiKey?: string;
+  geminiModel?: string;
+
+  // Azure OpenAI
+  azureApiKey?: string;
+  azureEndpoint?: string;
+  azureDeployment?: string;
+
+  // Custom Proxy
   proxyUrl?: string;
   proxyApiKey?: string;
+
+  // Hevy
+  hevyApiKey?: string;
 }
 
 export function loadConfig(): AppConfig {
@@ -39,10 +62,19 @@ export function loadConfig(): AppConfig {
           ...config.training.hypertrophy,
         },
       },
+      aiProvider: config.aiProvider,
       anthropicApiKey: config.anthropicApiKey,
-      hevyApiKey: config.hevyApiKey,
+      anthropicModel: config.anthropicModel,
+      openaiApiKey: config.openaiApiKey,
+      openaiModel: config.openaiModel,
+      geminiApiKey: config.geminiApiKey,
+      geminiModel: config.geminiModel,
+      azureApiKey: config.azureApiKey,
+      azureEndpoint: config.azureEndpoint,
+      azureDeployment: config.azureDeployment,
       proxyUrl: config.proxyUrl,
       proxyApiKey: config.proxyApiKey,
+      hevyApiKey: config.hevyApiKey,
     };
   } catch (error) {
     console.warn('⚠️  Could not load config file, using defaults');

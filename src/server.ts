@@ -26,10 +26,19 @@ const PORT = process.env.PORT || 3000;
 function getApiKeys() {
   const config = loadConfig();
   return {
+    aiProvider: config.aiProvider || '',
     anthropicApiKey: process.env.ANTHROPIC_API_KEY || config.anthropicApiKey || '',
-    hevyApiKey: process.env.HEVY_API_KEY || config.hevyApiKey || '',
+    anthropicModel: config.anthropicModel || 'claude-opus-4-6',
+    openaiApiKey: process.env.OPENAI_API_KEY || config.openaiApiKey || '',
+    openaiModel: config.openaiModel || 'gpt-4-turbo',
+    geminiApiKey: process.env.GEMINI_API_KEY || config.geminiApiKey || '',
+    geminiModel: config.geminiModel || 'gemini-pro',
+    azureApiKey: process.env.AZURE_API_KEY || config.azureApiKey || '',
+    azureEndpoint: config.azureEndpoint || '',
+    azureDeployment: config.azureDeployment || '',
     proxyUrl: process.env.PROXY_URL || config.proxyUrl || '',
-    proxyApiKey: process.env.PROXY_API_KEY || config.proxyApiKey || ''
+    proxyApiKey: process.env.PROXY_API_KEY || config.proxyApiKey || '',
+    hevyApiKey: process.env.HEVY_API_KEY || config.hevyApiKey || ''
   };
 }
 
@@ -144,7 +153,8 @@ app.post('/api/generate', async (req: Request, res: Response) => {
   generationInProgress = true;
 
   try {
-    const { hevyApiKey, anthropicApiKey, proxyUrl, proxyApiKey } = getApiKeys();
+    const keys = getApiKeys();
+    const { hevyApiKey, aiProvider, anthropicApiKey, openaiApiKey, geminiApiKey, azureApiKey, proxyUrl } = keys;
 
     if (!hevyApiKey) {
       generationInProgress = false;
@@ -153,11 +163,12 @@ app.post('/api/generate', async (req: Request, res: Response) => {
       });
     }
 
-    // Check if AI backend is configured (either proxy or direct Anthropic)
-    if (!anthropicApiKey && !proxyUrl) {
+    // Check if at least one AI backend is configured
+    const hasAIBackend = anthropicApiKey || openaiApiKey || geminiApiKey || azureApiKey || proxyUrl;
+    if (!hasAIBackend) {
       generationInProgress = false;
       return res.status(400).json({
-        error: 'AI backend not configured. Please add either a Proxy URL or Anthropic API key in Settings to use AI generation.'
+        error: 'AI backend not configured. Please configure an AI provider in Settings to use AI generation.'
       });
     }
 
@@ -260,15 +271,40 @@ app.get('/api/config', (req: Request, res: Response) => {
     const hevyApiKey = process.env.HEVY_API_KEY || config.hevyApiKey || '';
     const proxyUrl = process.env.PROXY_URL || config.proxyUrl || '';
     const proxyApiKey = process.env.PROXY_API_KEY || config.proxyApiKey || '';
+    const openaiApiKey = process.env.OPENAI_API_KEY || config.openaiApiKey || '';
+    const geminiApiKey = process.env.GEMINI_API_KEY || config.geminiApiKey || '';
+    const azureApiKey = process.env.AZURE_API_KEY || config.azureApiKey || '';
 
     // Explicitly create response object
     // Note: In production, you should NEVER send API keys to the client
     // This is only for local development where users provide their own keys
     const responseObj = {
-      anthropicApiKey: anthropicApiKey ? '***' + anthropicApiKey.slice(-4) : '', // Mask key except last 4 chars
-      hevyApiKey: hevyApiKey ? '***' + hevyApiKey.slice(-4) : '', // Mask key except last 4 chars
-      proxyUrl: proxyUrl, // No need to mask URL
-      proxyApiKey: proxyApiKey ? '***' + proxyApiKey.slice(-4) : '', // Mask key except last 4 chars
+      aiProvider: config.aiProvider || '',
+
+      // Anthropic
+      anthropicApiKey: anthropicApiKey ? '***' + anthropicApiKey.slice(-4) : '',
+      anthropicModel: config.anthropicModel || 'claude-opus-4-6',
+
+      // OpenAI
+      openaiApiKey: openaiApiKey ? '***' + openaiApiKey.slice(-4) : '',
+      openaiModel: config.openaiModel || 'gpt-4-turbo',
+
+      // Gemini
+      geminiApiKey: geminiApiKey ? '***' + geminiApiKey.slice(-4) : '',
+      geminiModel: config.geminiModel || 'gemini-pro',
+
+      // Azure
+      azureApiKey: azureApiKey ? '***' + azureApiKey.slice(-4) : '',
+      azureEndpoint: config.azureEndpoint || '',
+      azureDeployment: config.azureDeployment || '',
+
+      // Proxy
+      proxyUrl: proxyUrl,
+      proxyApiKey: proxyApiKey ? '***' + proxyApiKey.slice(-4) : '',
+
+      // Hevy
+      hevyApiKey: hevyApiKey ? '***' + hevyApiKey.slice(-4) : '',
+
       hevy: {
         baseUrl: config.hevy.baseUrl,
         timeout: config.hevy.timeout,
@@ -312,17 +348,56 @@ app.put('/api/config', async (req: Request, res: Response) => {
     };
 
     // Store API keys if provided (only in config file, not in environment)
-    if (req.body.anthropicApiKey) {
+    if (req.body.aiProvider !== undefined) {
+      updatedConfig.aiProvider = req.body.aiProvider;
+    }
+
+    // Anthropic
+    if (req.body.anthropicApiKey !== undefined) {
       updatedConfig.anthropicApiKey = req.body.anthropicApiKey;
     }
-    if (req.body.hevyApiKey) {
-      updatedConfig.hevyApiKey = req.body.hevyApiKey;
+    if (req.body.anthropicModel !== undefined) {
+      updatedConfig.anthropicModel = req.body.anthropicModel;
     }
+
+    // OpenAI
+    if (req.body.openaiApiKey !== undefined) {
+      updatedConfig.openaiApiKey = req.body.openaiApiKey;
+    }
+    if (req.body.openaiModel !== undefined) {
+      updatedConfig.openaiModel = req.body.openaiModel;
+    }
+
+    // Gemini
+    if (req.body.geminiApiKey !== undefined) {
+      updatedConfig.geminiApiKey = req.body.geminiApiKey;
+    }
+    if (req.body.geminiModel !== undefined) {
+      updatedConfig.geminiModel = req.body.geminiModel;
+    }
+
+    // Azure
+    if (req.body.azureApiKey !== undefined) {
+      updatedConfig.azureApiKey = req.body.azureApiKey;
+    }
+    if (req.body.azureEndpoint !== undefined) {
+      updatedConfig.azureEndpoint = req.body.azureEndpoint;
+    }
+    if (req.body.azureDeployment !== undefined) {
+      updatedConfig.azureDeployment = req.body.azureDeployment;
+    }
+
+    // Proxy
     if (req.body.proxyUrl !== undefined) {
       updatedConfig.proxyUrl = req.body.proxyUrl;
     }
     if (req.body.proxyApiKey !== undefined) {
       updatedConfig.proxyApiKey = req.body.proxyApiKey;
+    }
+
+    // Hevy
+    if (req.body.hevyApiKey !== undefined) {
+      updatedConfig.hevyApiKey = req.body.hevyApiKey;
     }
 
     // Write to file
