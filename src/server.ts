@@ -156,6 +156,9 @@ app.post('/api/generate', async (req: Request, res: Response) => {
     const keys = getApiKeys();
     const { hevyApiKey, aiProvider, anthropicApiKey, openaiApiKey, geminiApiKey, azureApiKey, proxyUrl } = keys;
 
+    // Extract theme from request body
+    const theme = req.body?.theme || 'lotr';
+
     if (!hevyApiKey) {
       generationInProgress = false;
       return res.status(400).json({
@@ -194,7 +197,7 @@ app.post('/api/generate', async (req: Request, res: Response) => {
     const stats = analyzer.buildExerciseStats(workouts, templates);
     const filtered = analyzer.filterArmsShouldersChest(stats, trainingConfig.training.focusMuscles);
     const categorized = analyzer.categorizeExercises(filtered);
-    const routine = planner.planTodayRoutine(categorized, trainingConfig.training);
+    const routine = planner.planTodayRoutine(categorized, trainingConfig.training, theme);
 
     lastGeneratedRoutine = routine;
 
