@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hevy AI Trainer - Epic Training System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:wght@400;600;700&family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;600;700&display=swap');
+
+        :root {
+            /* Theme will be set via data-theme attribute */
+        }
+
+        /* LOTR Theme Variables */
+        [data-theme="lotr"] {
+            --primary-color: #d4af37;
+            --primary-light: #f4e5a1;
+            --primary-dark: #b8860b;
+            --secondary-color: #b8945f;
+            --secondary-light: #a89968;
+            --accent-color: #8b7355;
+            --bg-primary: #0d0d0d;
+            --bg-secondary: rgba(30, 25, 15, 0.9);
+            --bg-card: rgba(30, 25, 15, 0.8);
+            --text-primary: #e8dcc4;
+            --text-secondary: #b8945f;
+            --border-color: rgba(212, 175, 55, 0.3);
+            --shadow-color: rgba(212, 175, 55, 0.4);
+            --compound-color: #d4a574;
+            --isolation-color: #9d88d3;
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Cormorant Garamond', Georgia, serif;
+            --theme-icon: '⚔';
+            --theme-icon-alt: '◈';
+        }
+
+        /* Terminator Theme Variables */
+        [data-theme="terminator"] {
+            --primary-color: #00ff41;
+            --primary-light: #39ff7a;
+            --primary-dark: #00cc33;
+            --secondary-color: #00d4ff;
+            --secondary-light: #39e0ff;
+            --accent-color: #ff0055;
+            --bg-primary: #000000;
+            --bg-secondary: rgba(10, 10, 15, 0.95);
+            --bg-card: rgba(15, 15, 20, 0.9);
+            --text-primary: #00ff41;
+            --text-secondary: #00d4ff;
+            --border-color: rgba(0, 255, 65, 0.3);
+            --shadow-color: rgba(0, 255, 65, 0.5);
+            --compound-color: #ff0055;
+            --isolation-color: #00d4ff;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --theme-icon: '◉';
+            --theme-icon-alt: '▣';
+        }
+
+        /* Cyberpunk Theme Variables */
+        [data-theme="cyberpunk"] {
+            --primary-color: #ff006e;
+            --primary-light: #ff1a8c;
+            --primary-dark: #cc0058;
+            --secondary-color: #00f5ff;
+            --secondary-light: #33f7ff;
+            --accent-color: #ffd700;
+            --bg-primary: #0a0014;
+            --bg-secondary: rgba(20, 0, 40, 0.95);
+            --bg-card: rgba(30, 0, 60, 0.9);
+            --text-primary: #00f5ff;
+            --text-secondary: #ff006e;
+            --border-color: rgba(255, 0, 110, 0.4);
+            --shadow-color: rgba(255, 0, 110, 0.6);
+            --compound-color: #ffd700;
+            --isolation-color: #00f5ff;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --theme-icon: '◆';
+            --theme-icon-alt: '▲';
+        }
+
+        /* Viking/Norse Theme Variables */
+        [data-theme="viking"] {
+            --primary-color: #4a90e2;
+            --primary-light: #6ba3e8;
+            --primary-dark: #3a7bc8;
+            --secondary-color: #c0c0c0;
+            --secondary-light: #d4d4d4;
+            --accent-color: #cc0000;
+            --bg-primary: #0d1821;
+            --bg-secondary: rgba(15, 25, 40, 0.95);
+            --bg-card: rgba(20, 30, 50, 0.9);
+            --text-primary: #e8f4f8;
+            --text-secondary: #c0c0c0;
+            --border-color: rgba(74, 144, 226, 0.3);
+            --shadow-color: rgba(74, 144, 226, 0.5);
+            --compound-color: #ffbf00;
+            --isolation-color: #4a90e2;
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Cormorant Garamond', Georgia, serif;
+            --theme-icon: '⚡';
+            --theme-icon-alt: '≋';
+        }
+
+        /* Matrix Theme Variables */
+        [data-theme="matrix"] {
+            --primary-color: #00ff41;
+            --primary-light: #33ff66;
+            --primary-dark: #00cc33;
+            --secondary-color: #003b00;
+            --secondary-light: #005500;
+            --accent-color: #00ff41;
+            --bg-primary: #000000;
+            --bg-secondary: rgba(0, 10, 0, 0.98);
+            --bg-card: rgba(0, 20, 0, 0.95);
+            --text-primary: #00ff41;
+            --text-secondary: #00cc33;
+            --border-color: rgba(0, 255, 65, 0.3);
+            --shadow-color: rgba(0, 255, 65, 0.6);
+            --compound-color: #00ff41;
+            --isolation-color: #00cc33;
+            --font-heading: 'Courier New', monospace;
+            --font-body: 'Consolas', monospace;
+            --theme-icon: '█';
+            --theme-icon-alt: '▓';
+        }
+
+        /* Samurai Theme Variables */
+        [data-theme="samurai"] {
+            --primary-color: #bc002d;
+            --primary-light: #d91a47;
+            --primary-dark: #8b0021;
+            --secondary-color: #ffb7c5;
+            --secondary-light: #ffd0da;
+            --accent-color: #ffd700;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: rgba(30, 20, 20, 0.95);
+            --bg-card: rgba(40, 30, 30, 0.9);
+            --text-primary: #f5f5f5;
+            --text-secondary: #ffb7c5;
+            --border-color: rgba(188, 0, 45, 0.3);
+            --shadow-color: rgba(188, 0, 45, 0.5);
+            --compound-color: #ffd700;
+            --isolation-color: #ffb7c5;
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Cormorant Garamond', Georgia, serif;
+            --theme-icon: '⛩';
+            --theme-icon-alt: '◈';
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+            position: relative;
+            transition: all 0.6s ease;
+        }
+
+        /* LOTR Background */
+        [data-theme="lotr"] body {
+            background-image:
+                linear-gradient(180deg, rgba(13, 13, 13, 0.95) 0%, rgba(20, 15, 10, 0.98) 100%),
+                radial-gradient(circle at 20% 30%, rgba(139, 115, 85, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(184, 134, 11, 0.1) 0%, transparent 50%);
+        }
+
+        [data-theme="lotr"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            background: linear-gradient(180deg, rgba(184, 134, 11, 0.15) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Terminator Background */
+        [data-theme="terminator"] body {
+            background-image:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, rgba(5, 5, 10, 0.98) 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px);
+        }
+
+        [data-theme="terminator"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            background: linear-gradient(180deg, rgba(0, 255, 65, 0.1) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="terminator"] body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(0deg, transparent 0px, rgba(0, 255, 65, 0.02) 1px, transparent 2px),
+                repeating-linear-gradient(90deg, transparent 0px, rgba(0, 255, 65, 0.02) 1px, transparent 2px);
+            background-size: 100% 4px, 4px 100%;
+            pointer-events: none;
+            z-index: 0;
+            animation: scanlines 8s linear infinite;
+        }
+
+        /* Cyberpunk Background */
+        [data-theme="cyberpunk"] body {
+            background-image:
+                linear-gradient(180deg, rgba(10, 0, 20, 0.98) 0%, rgba(20, 0, 40, 0.98) 100%),
+                repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(255, 0, 110, 0.03) 100px, rgba(255, 0, 110, 0.03) 101px),
+                repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(0, 245, 255, 0.03) 100px, rgba(0, 245, 255, 0.03) 101px);
+        }
+
+        [data-theme="cyberpunk"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 400px;
+            background:
+                radial-gradient(circle at 30% 20%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="cyberpunk"] body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(0deg, transparent 0px, rgba(255, 0, 110, 0.02) 1px, transparent 2px);
+            background-size: 100% 3px;
+            pointer-events: none;
+            z-index: 0;
+            animation: glitchScan 10s linear infinite;
+        }
+
+        @keyframes glitchScan {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+        }
+
+        /* Viking Background */
+        [data-theme="viking"] body {
+            background-image:
+                linear-gradient(180deg, rgba(13, 24, 33, 0.98) 0%, rgba(15, 25, 40, 0.98) 100%),
+                radial-gradient(circle at 30% 20%, rgba(74, 144, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(192, 192, 192, 0.08) 0%, transparent 50%);
+        }
+
+        [data-theme="viking"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 350px;
+            background: linear-gradient(180deg, rgba(74, 144, 226, 0.15) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="viking"] body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(74, 144, 226, 0.01) 2px, rgba(74, 144, 226, 0.01) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Matrix Background */
+        [data-theme="matrix"] body {
+            background-image:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, rgba(0, 10, 0, 0.98) 100%);
+        }
+
+        [data-theme="matrix"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            background: linear-gradient(180deg, rgba(0, 255, 65, 0.1) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="matrix"] body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(0deg, transparent 0px, rgba(0, 255, 65, 0.03) 1px, transparent 2px);
+            background-size: 100% 2px;
+            pointer-events: none;
+            z-index: 0;
+            animation: matrixRain 20s linear infinite;
+        }
+
+        @keyframes matrixRain {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(20px); }
+        }
+
+        /* Samurai Background */
+        [data-theme="samurai"] body {
+            background-image:
+                linear-gradient(180deg, rgba(26, 26, 26, 0.98) 0%, rgba(30, 20, 20, 0.98) 100%),
+                radial-gradient(circle at 50% 50%, rgba(188, 0, 45, 0.05) 0%, transparent 60%);
+        }
+
+        [data-theme="samurai"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 350px;
+            background:
+                linear-gradient(180deg, rgba(255, 183, 197, 0.08) 0%, transparent 100%),
+                radial-gradient(circle at 70% 30%, rgba(188, 0, 45, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="samurai"] body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(188, 0, 45, 0.02) 40px, rgba(188, 0, 45, 0.02) 41px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px var(--shadow-color);
+            border-color: var(--primary-color);
+        }
+
+        .theme-toggle-icon {
+            font-size: 1.3em;
+        }
+
+        /* Theme Menu Overlay */
+        .theme-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .theme-menu-overlay.active {
+            display: flex;
+        }
+
+        /* Theme Menu Panel */
+        .theme-menu {
+            background: var(--bg-secondary);
+            border: 3px solid var(--primary-color);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.95), 0 0 40px var(--shadow-color);
+            animation: slideInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .theme-menu h2 {
+            font-family: var(--font-heading);
+            font-size: 2em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .theme-menu-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-menu-close:hover {
+            color: var(--primary-color);
+            background: rgba(255, 0, 0, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .theme-option {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .theme-option:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 32px var(--shadow-color);
+        }
+
+        .theme-option:hover::before {
+            opacity: 0.1;
+        }
+
+        .theme-option.active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(var(--primary-color-rgb), 0.2), rgba(var(--primary-color-rgb), 0.1));
+            box-shadow: 0 0 30px var(--shadow-color);
+        }
+
+        .theme-option.active::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            font-weight: 900;
+        }
+
+        .theme-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-name {
+            font-family: var(--font-heading);
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-preview {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-preview-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .header::before {
+            content: var(--theme-icon);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3em;
+            opacity: 0.3;
+            color: var(--primary-color);
+            text-shadow: 0 0 30px var(--shadow-color);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.6; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5em;
+            margin-bottom: 12px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 50%, var(--primary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            text-shadow: 0 0 40px var(--shadow-color);
+            position: relative;
+            transition: all 0.6s ease;
+        }
+
+        [data-theme="terminator"] .header h1 {
+            animation: glitch 5s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translateX(0); }
+            92% { transform: translateX(-2px); }
+            94% { transform: translateX(2px); }
+        }
+
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .header p {
+            font-family: var(--font-heading);
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* Configuration Button */
+        .config-button {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 999;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px var(--shadow-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Configuration Panel Overlay */
+        .config-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .config-overlay.active {
+            display: flex;
+        }
+
+        /* Configuration Panel Styles */
+        .config-panel {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(15px);
+            border: 3px solid var(--primary-color);
+            border-radius: 24px;
+            padding: 0;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.95),
+                0 0 40px var(--shadow-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            max-width: 1000px;
+            width: 100%;
+            max-height: 85vh;
+            overflow: hidden;
+            animation: slideInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .config-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg,
+                transparent,
+                var(--primary-color) 20%,
+                var(--primary-light) 50%,
+                var(--primary-color) 80%,
+                transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .config-panel::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg,
+                transparent,
+                var(--primary-color) 20%,
+                var(--primary-light) 50%,
+                var(--primary-color) 80%,
+                transparent);
+            opacity: 0.6;
+        }
+
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 32px 40px;
+            background: linear-gradient(135deg,
+                var(--border-color) 0%,
+                rgba(0, 0, 0, 0.4) 100%);
+            border-bottom: 2px solid var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .config-header::before {
+            content: '⚙';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5em;
+            opacity: 0.15;
+            color: var(--primary-color);
+            animation: rotateGear 20s linear infinite;
+        }
+
+        @keyframes rotateGear {
+            from { transform: translateY(-50%) rotate(0deg); }
+            to { transform: translateY(-50%) rotate(360deg); }
+        }
+
+        [data-theme="terminator"] .config-header::before {
+            content: '◉';
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .config-header h2 {
+            font-family: var(--font-heading);
+            font-size: 2em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px var(--shadow-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .config-close {
+            font-size: 2.5em;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            line-height: 1;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .config-close:hover {
+            color: var(--primary-color);
+            background: rgba(255, 0, 0, 0.2);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .config-content {
+            padding: 40px;
+            max-height: calc(85vh - 140px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        .config-content::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .config-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .config-content::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .config-content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+
+        .config-content {
+            display: grid;
+            gap: 35px;
+        }
+
+        .config-section {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .config-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, var(--primary-color), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .config-section:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        .config-section:hover::before {
+            opacity: 0.05;
+        }
+
+        .config-section h3 {
+            font-family: var(--font-heading);
+            font-size: 1.4em;
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .config-section h3::before {
+            content: '◆';
+            font-size: 0.7em;
+            color: var(--primary-light);
+        }
+
+        [data-theme="terminator"] .config-section h3::before {
+            content: '▣';
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .config-field {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+        }
+
+        .config-field label {
+            font-family: var(--font-heading);
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .config-field .default-value {
+            font-size: 0.8em;
+            color: var(--primary-color);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .config-field input[type="number"],
+        .config-field input[type="text"] {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 20px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1.15em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .config-field input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--shadow-color), inset 0 2px 8px rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.7);
+            transform: translateY(-1px);
+        }
+
+        .config-field input:hover {
+            border-color: var(--primary-light);
+        }
+
+        /* Input glow effect */
+        .config-field input:focus::placeholder {
+            color: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .muscle-group-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 10px 0;
+        }
+
+        .muscle-chip {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--border-color);
+            border-radius: 24px;
+            padding: 12px 22px;
+            font-family: var(--font-heading);
+            font-size: 0.9em;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .muscle-chip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .muscle-chip span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .muscle-chip:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px var(--shadow-color);
+        }
+
+        .muscle-chip.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary-color);
+            color: var(--bg-primary);
+            box-shadow: 0 6px 25px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        .muscle-chip.active::before {
+            opacity: 1;
+        }
+
+        [data-theme="terminator"] .muscle-chip.active {
+            color: #000;
+            text-shadow: 0 0 8px var(--primary-color);
+            font-weight: 900;
+        }
+
+        .config-actions {
+            display: flex;
+            gap: 12px;
+            padding: 24px 40px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, var(--border-color) 100%);
+            border-top: 2px solid var(--primary-color);
+            flex-wrap: wrap;
+            position: sticky;
+            bottom: 0;
+            backdrop-filter: blur(10px);
+            margin: 0 -40px -40px -40px;
+        }
+
+        .config-actions .btn {
+            flex: 1;
+            min-width: 140px;
+            font-size: 0.95em;
+            padding: 14px 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .config-actions .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px var(--shadow-color);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+            color: var(--text-primary);
+            border-color: var(--secondary-color);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .stat-card::after {
+            content: var(--theme-icon-alt);
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 3em;
+            opacity: 0.05;
+            color: var(--primary-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 12px 48px var(--shadow-color), inset 0 1px 0 var(--border-color);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card .label {
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-size: 0.9em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .stat-card .value {
+            font-family: var(--font-heading);
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .main-panel {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7), inset 0 1px 0 var(--border-color);
+            position: relative;
+        }
+
+        .main-panel::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: var(--font-heading);
+            padding: 20px 40px;
+            font-size: 1.1em;
+            border: 2px solid;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex: 1;
+            min-width: 220px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--bg-primary);
+            border-color: var(--primary-color);
+            box-shadow: 0 6px 30px var(--shadow-color), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        [data-theme="terminator"] .btn-primary {
+            color: #000;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px var(--shadow-color), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: var(--primary-light);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-primary);
+            border-color: var(--accent-color);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .spinner {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 24px;
+            box-shadow: 0 0 30px var(--shadow-color);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading p {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        [data-theme="terminator"] .loading p {
+            font-style: normal;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .routine-preview {
+            margin-top: 40px;
+        }
+
+        .routine-header {
+            background: linear-gradient(135deg, var(--border-color) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border: 2px solid var(--primary-color);
+            padding: 36px;
+            border-radius: 16px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 var(--border-color);
+            position: relative;
+        }
+
+        .routine-header::before {
+            content: var(--theme-icon-alt);
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2em;
+            color: var(--primary-color);
+            opacity: 0.2;
+        }
+
+        .routine-header::after {
+            content: var(--theme-icon-alt);
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: var(--primary-color);
+            opacity: 0.2;
+        }
+
+        .routine-header h2 {
+            font-family: var(--font-heading);
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .routine-meta {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .routine-meta > div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .routine-notes {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1em;
+            text-align: center;
+            font-style: italic;
+        }
+
+        [data-theme="terminator"] .routine-notes {
+            font-style: normal;
+        }
+
+        .exercise-card {
+            background: var(--bg-card);
+            border-left: 5px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: all 0.3s;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .exercise-card::before {
+            content: var(--theme-icon);
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5em;
+            opacity: 0.1;
+            color: var(--primary-color);
+        }
+
+        .exercise-card:hover {
+            background: var(--bg-secondary);
+            border-left-color: var(--primary-light);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            transform: translateX(6px);
+            border-color: var(--primary-color);
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .exercise-name {
+            font-family: var(--font-heading);
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        .exercise-type {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: var(--font-heading);
+        }
+
+        .compound {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.3) 0%, rgba(160, 82, 45, 0.3) 100%);
+            color: var(--compound-color);
+            border: 2px solid var(--compound-color);
+        }
+
+        [data-theme="terminator"] .compound {
+            background: linear-gradient(135deg, rgba(255, 0, 85, 0.2) 0%, rgba(255, 0, 85, 0.1) 100%);
+            border-color: var(--compound-color);
+            box-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+        }
+
+        .isolation {
+            background: linear-gradient(135deg, rgba(72, 61, 139, 0.3) 0%, rgba(106, 90, 205, 0.3) 100%);
+            color: var(--isolation-color);
+            border: 2px solid var(--isolation-color);
+        }
+
+        [data-theme="terminator"] .isolation {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 212, 255, 0.1) 100%);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .strategy-info {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .strategy-label {
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85em;
+            font-family: var(--font-heading);
+        }
+
+        .sets-list {
+            margin: 20px 0;
+        }
+
+        .set-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr 1fr;
+            gap: 20px;
+            padding: 16px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .set-row:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--primary-color);
+        }
+
+        .set-row.header {
+            background: linear-gradient(135deg, var(--border-color) 0%, rgba(0, 0, 0, 0.4) 100%);
+            border: 2px solid var(--primary-color);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 1.5px;
+        }
+
+        .set-row.header:hover {
+            background: linear-gradient(135deg, var(--border-color) 0%, rgba(0, 0, 0, 0.4) 100%);
+        }
+
+        .set-label {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .set-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .exercise-notes {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            margin-top: 18px;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-color);
+            font-style: italic;
+        }
+
+        [data-theme="terminator"] .exercise-notes {
+            font-style: normal;
+        }
+
+        .alert {
+            padding: 20px 28px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-weight: 600;
+            border: 2px solid;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, var(--border-color) 0%, rgba(0, 0, 0, 0.3) 100%);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.3) 100%);
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .set-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .main-panel {
+                padding: 24px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 10px 16px;
+                font-size: 0.8em;
+            }
+
+            .config-button {
+                top: 60px;
+                right: 10px;
+                padding: 10px 16px;
+                font-size: 0.8em;
+            }
+
+            .config-overlay {
+                padding: 20px 10px;
+            }
+
+            .config-panel {
+                max-height: 92vh;
+                border-radius: 20px;
+                border-width: 2px;
+            }
+
+            .config-header {
+                padding: 24px 20px;
+            }
+
+            .config-header h2 {
+                font-size: 1.5em;
+            }
+
+            .config-close {
+                font-size: 2em;
+                width: 40px;
+                height: 40px;
+            }
+
+            .config-content {
+                padding: 24px 20px;
+                max-height: calc(92vh - 200px);
+            }
+
+            .config-section {
+                padding: 24px 20px;
+            }
+
+            .config-section h3 {
+                font-size: 1.2em;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .config-field input {
+                padding: 14px 16px;
+                font-size: 1.05em;
+            }
+
+            .muscle-chip {
+                padding: 10px 18px;
+                font-size: 0.85em;
+            }
+
+            .config-actions {
+                padding: 20px;
+                margin: 0 -20px -20px -20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .config-actions .btn {
+                width: 100%;
+                min-width: unset;
+                padding: 14px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body data-theme="lotr">
+    <button class="theme-toggle" onclick="openThemeMenu()">
+        <span class="theme-toggle-icon" id="themeIcon">🎨</span>
+        <span id="themeText">THEMES</span>
+    </button>
+
+    <button class="config-button" onclick="openConfigPanel()">
+        <span>⚙</span>
+        <span id="configButtonText">Configuration</span>
+    </button>
+
+    <!-- Theme Selection Menu -->
+    <div class="theme-menu-overlay" id="themeMenuOverlay" onclick="closeThemeMenuOnOverlay(event)">
+        <div class="theme-menu" onclick="event.stopPropagation()">
+            <span class="theme-menu-close" onclick="closeThemeMenu()">&times;</span>
+            <h2>⚡ SELECT YOUR THEME ⚡</h2>
+
+            <div class="theme-grid">
+                <div class="theme-option" data-theme="lotr" onclick="selectTheme('lotr')">
+                    <div class="theme-icon">⚔</div>
+                    <div class="theme-name">LOTR</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #d4af37;"></div>
+                        <div class="theme-preview-color" style="background: #b8945f;"></div>
+                        <div class="theme-preview-color" style="background: #8b7355;"></div>
+                    </div>
+                </div>
+
+                <div class="theme-option" data-theme="terminator" onclick="selectTheme('terminator')">
+                    <div class="theme-icon">◉</div>
+                    <div class="theme-name">Terminator</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #00ff41;"></div>
+                        <div class="theme-preview-color" style="background: #00d4ff;"></div>
+                        <div class="theme-preview-color" style="background: #ff0055;"></div>
+                    </div>
+                </div>
+
+                <div class="theme-option" data-theme="cyberpunk" onclick="selectTheme('cyberpunk')">
+                    <div class="theme-icon">◆</div>
+                    <div class="theme-name">Cyberpunk</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #ff006e;"></div>
+                        <div class="theme-preview-color" style="background: #00f5ff;"></div>
+                        <div class="theme-preview-color" style="background: #ffd700;"></div>
+                    </div>
+                </div>
+
+                <div class="theme-option" data-theme="viking" onclick="selectTheme('viking')">
+                    <div class="theme-icon">⚡</div>
+                    <div class="theme-name">Viking</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #4a90e2;"></div>
+                        <div class="theme-preview-color" style="background: #c0c0c0;"></div>
+                        <div class="theme-preview-color" style="background: #ffbf00;"></div>
+                    </div>
+                </div>
+
+                <div class="theme-option" data-theme="matrix" onclick="selectTheme('matrix')">
+                    <div class="theme-icon">█</div>
+                    <div class="theme-name">Matrix</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #00ff41;"></div>
+                        <div class="theme-preview-color" style="background: #003b00;"></div>
+                        <div class="theme-preview-color" style="background: #00cc33;"></div>
+                    </div>
+                </div>
+
+                <div class="theme-option" data-theme="samurai" onclick="selectTheme('samurai')">
+                    <div class="theme-icon">⛩</div>
+                    <div class="theme-name">Samurai</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #bc002d;"></div>
+                        <div class="theme-preview-color" style="background: #ffb7c5;"></div>
+                        <div class="theme-preview-color" style="background: #ffd700;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Overlay -->
+    <div class="config-overlay" id="configOverlay" onclick="closeConfigPanelOnOverlay(event)">
+        <div class="config-panel" onclick="event.stopPropagation()">
+            <div class="config-header">
+                <h2 id="configTitle">⚙ Training Configuration</h2>
+                <span class="config-close" onclick="closeConfigPanel()">&times;</span>
+            </div>
+
+            <div class="config-content" id="configContent">
+                <!-- API Keys Section -->
+                <div class="config-section">
+                    <h3>🔑 API Keys</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9em; margin-bottom: 20px;">
+                        Configure your API keys for AI generation and Hevy integration.
+                        <strong>Keys are stored locally and never shared.</strong>
+                    </p>
+                    <div class="config-grid">
+                        <div class="config-field" style="grid-column: 1 / -1;">
+                            <label for="anthropicApiKey">
+                                <span>Anthropic API Key (for AI workout generation)</span>
+                                <span class="default-value">Get from: console.anthropic.com</span>
+                            </label>
+                            <input type="password" id="anthropicApiKey" placeholder="sk-ant-...">
+                        </div>
+                        <div class="config-field" style="grid-column: 1 / -1;">
+                            <label for="hevyApiKey">
+                                <span>Hevy API Key (for publishing workouts)</span>
+                                <span class="default-value">Get from: hevyapp.com/developers</span>
+                            </label>
+                            <input type="password" id="hevyApiKey" placeholder="Your Hevy API key">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hevy API Settings -->
+                <div class="config-section">
+                    <h3>Hevy API Settings</h3>
+                    <div class="config-grid">
+                        <div class="config-field">
+                            <label for="apiTimeout">
+                                <span>API Timeout (ms)</span>
+                                <span class="default-value" id="defaultApiTimeout"></span>
+                            </label>
+                            <input type="number" id="apiTimeout" min="5000" max="120000" step="1000">
+                        </div>
+                        <div class="config-field">
+                            <label for="apiRetries">
+                                <span>Max Retries</span>
+                                <span class="default-value" id="defaultApiRetries"></span>
+                            </label>
+                            <input type="number" id="apiRetries" min="1" max="10">
+                        </div>
+                        <div class="config-field">
+                            <label for="apiPageSize">
+                                <span>Page Size</span>
+                                <span class="default-value" id="defaultApiPageSize"></span>
+                            </label>
+                            <input type="number" id="apiPageSize" min="10" max="500" step="10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Training Parameters -->
+                <div class="config-section">
+                    <h3>Training Parameters</h3>
+                    <div class="config-grid">
+                        <div class="config-field">
+                            <label for="targetMinutes">
+                                <span>Target Session (minutes)</span>
+                                <span class="default-value" id="defaultTargetMinutes"></span>
+                            </label>
+                            <input type="number" id="targetMinutes" min="30" max="120" step="5">
+                        </div>
+                        <div class="config-field">
+                            <label for="sessionsPerWeek">
+                                <span>Sessions Per Week</span>
+                                <span class="default-value" id="defaultSessionsPerWeek"></span>
+                            </label>
+                            <input type="number" id="sessionsPerWeek" min="1" max="7">
+                        </div>
+                        <div class="config-field">
+                            <label for="historyMonths">
+                                <span>History Months</span>
+                                <span class="default-value" id="defaultHistoryMonths"></span>
+                            </label>
+                            <input type="number" id="historyMonths" min="1" max="24">
+                        </div>
+                        <div class="config-field">
+                            <label for="exerciseCountMin">
+                                <span>Min Exercises</span>
+                                <span class="default-value" id="defaultExerciseCountMin"></span>
+                            </label>
+                            <input type="number" id="exerciseCountMin" min="3" max="15">
+                        </div>
+                        <div class="config-field">
+                            <label for="exerciseCountMax">
+                                <span>Max Exercises</span>
+                                <span class="default-value" id="defaultExerciseCountMax"></span>
+                            </label>
+                            <input type="number" id="exerciseCountMax" min="3" max="15">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hypertrophy Settings -->
+                <div class="config-section">
+                    <h3>Hypertrophy Settings</h3>
+                    <div class="config-grid">
+                        <div class="config-field">
+                            <label for="setsMin">
+                                <span>Min Sets Per Exercise</span>
+                                <span class="default-value" id="defaultSetsMin"></span>
+                            </label>
+                            <input type="number" id="setsMin" min="1" max="10">
+                        </div>
+                        <div class="config-field">
+                            <label for="setsMax">
+                                <span>Max Sets Per Exercise</span>
+                                <span class="default-value" id="defaultSetsMax"></span>
+                            </label>
+                            <input type="number" id="setsMax" min="1" max="10">
+                        </div>
+                        <div class="config-field">
+                            <label for="repsMin">
+                                <span>Min Reps</span>
+                                <span class="default-value" id="defaultRepsMin"></span>
+                            </label>
+                            <input type="number" id="repsMin" min="1" max="30">
+                        </div>
+                        <div class="config-field">
+                            <label for="repsMax">
+                                <span>Max Reps</span>
+                                <span class="default-value" id="defaultRepsMax"></span>
+                            </label>
+                            <input type="number" id="repsMax" min="1" max="30">
+                        </div>
+                        <div class="config-field">
+                            <label for="restCompound">
+                                <span>Rest Compound (seconds)</span>
+                                <span class="default-value" id="defaultRestCompound"></span>
+                            </label>
+                            <input type="number" id="restCompound" min="30" max="300" step="10">
+                        </div>
+                        <div class="config-field">
+                            <label for="restIsolation">
+                                <span>Rest Isolation (seconds)</span>
+                                <span class="default-value" id="defaultRestIsolation"></span>
+                            </label>
+                            <input type="number" id="restIsolation" min="30" max="300" step="10">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Focus Muscle Groups -->
+                <div class="config-section">
+                    <h3>Focus Muscle Groups</h3>
+                    <div class="muscle-group-selector" id="muscleSelector">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="config-actions">
+                    <button class="btn btn-primary" onclick="saveConfiguration()">
+                        <span id="saveConfigText">💾 Save Configuration</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetConfiguration()">
+                        <span id="resetConfigText">🔄 Reset to Defaults</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeConfigPanel()">
+                        <span id="cancelConfigText">✖ Cancel</span>
+                    </button>
+                </div>
+
+                <div id="configAlertContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="headerTitle">Fellowship of Gains</h1>
+            <p id="headerSubtitle">The Quest for Legendary Strength</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="label" id="stat1Label">Quests Completed</div>
+                <div class="value" id="totalWorkouts">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label" id="stat2Label">Forged Skills</div>
+                <div class="value" id="totalExercises">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label" id="stat3Label">Elite Training</div>
+                <div class="value" id="focusExercises">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label" id="stat4Label">Last Journey</div>
+                <div class="value" id="lastWorkout" style="font-size: 1.2em;">-</div>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <div class="button-group">
+                <button class="btn btn-primary" id="generateBtn" onclick="generateRoutine()">
+                    <span id="generateBtnText">⚔ Forge New Quest</span>
+                </button>
+                <button class="btn btn-success hidden" id="publishBtn" onclick="publishRoutine()" disabled>
+                    <span id="publishBtnText">📜 Send to Hevy</span>
+                </button>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <div id="loadingState" class="loading hidden">
+                <div class="spinner"></div>
+                <p id="loadingText">The Council convenes... Forging your legendary routine...</p>
+            </div>
+
+            <div id="routinePreview" class="routine-preview hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        let currentTheme = 'lotr';
+
+        // Store current configuration
+        let currentConfig = null;
+
+        // Available muscle groups
+        const availableMuscles = [
+            'chest', 'shoulders', 'biceps', 'triceps', 'lats', 'upper_back',
+            'lower_back', 'quads', 'hamstrings', 'glutes', 'calves', 'abs', 'forearms'
+        ];
+
+        // Theme Menu Functions
+        function openThemeMenu() {
+            document.getElementById('themeMenuOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateThemeMenuSelection();
+        }
+
+        function closeThemeMenu() {
+            document.getElementById('themeMenuOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeThemeMenuOnOverlay(event) {
+            if (event.target === document.getElementById('themeMenuOverlay')) {
+                closeThemeMenu();
+            }
+        }
+
+        function selectTheme(themeName) {
+            currentTheme = themeName;
+            document.body.setAttribute('data-theme', themeName);
+            updateThemeContent();
+            updateThemeMenuSelection();
+            localStorage.setItem('theme', themeName);
+
+            // Re-render routine if one is displayed
+            if (lastRoutineData) {
+                displayRoutine(lastRoutineData);
+            }
+
+            // Close menu after short delay
+            setTimeout(closeThemeMenu, 500);
+        }
+
+        function updateThemeMenuSelection() {
+            document.querySelectorAll('.theme-option').forEach(option => {
+                if (option.getAttribute('data-theme') === currentTheme) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        }
+
+        // Name translation map: LOTR -> Terminator
+        const nameTranslations = {
+            // Complete Upper Body
+            'Fellowship Complete Upper': 'FULL SYSTEM OVERRIDE',
+            'Mithril Total Upper Body': 'NEURAL NET PROTOCOL',
+            'Council of Elrond Session': 'SKYNET CORE DIRECTIVE',
+            'Return of the Gains': 'SYSTEM REBOOT SEQUENCE',
+            'Tower of Ecthelion Push': 'TOWER DEFENSE PROTOCOL',
+            'Paths of the Swole': 'NETWORK PATHWAY SCAN',
+            'March of the Ents': 'HEAVY MACHINERY PROTOCOL',
+            'Army of the Muscled': 'COMBAT UNIT DEPLOYMENT',
+
+            // Chest & Shoulders
+            'Mithril Push Power': 'TITANIUM THRUST PROTOCOL',
+            'Elven Upper Body Strength': 'PRECISION STRIKE SYSTEM',
+            'Dwarven Pressing Power': 'HYDRAULIC PRESS SEQUENCE',
+            'Gondor Chest & Shoulders': 'FORTRESS DEFENSE GRID',
+            'Rohan Pressing Session': 'CAVALRY STRIKE PROTOCOL',
+            'Rivendell Upper Strength': 'ETERNAL POWER MATRIX',
+            'Erebor Push Training': 'DEEP CORE ACTIVATION',
+            'Strength of Numenor': 'ANCIENT SYSTEM PROTOCOL',
+
+            // Chest & Arms
+            'Fellowship Chest & Arms': 'DUAL SYSTEM PROTOCOL',
+            'Legendary Upper Body Pump': 'MAXIMUM OUTPUT MODE',
+            'Quest Pressing + Arms': 'MISSION CRITICAL SEQUENCE',
+            'Mithril Chest Triceps Focus': 'ALLOY ARMOR PROTOCOL',
+            'Shire Strength Builder': 'BASELINE ENHANCEMENT MODE',
+            'Lothlorien Arms & Chest': 'STEALTH COMBAT PROTOCOL',
+            'One Rep to Rule Them All': 'SINGLE POINT TERMINATION',
+            'Aragorn Upper Power': 'HUNTER KILLER MODE',
+
+            // Shoulders & Arms
+            'Elven Shoulders & Arms': 'PRECISION TARGETING SYSTEM',
+            'Forge Deltoid Development': 'FACTORY BUILD PROTOCOL',
+            'Helm\'s Deep Shoulder Blast': 'SIEGE DEFENSE PROTOCOL',
+            'Gandalf Upper Sculpt': 'PRIME DIRECTIVE SEQUENCE',
+            'Isengard Arm Builder': 'INDUSTRIAL FORGE MODE',
+            'Minas Tirith Deltoids': 'CITADEL DEFENSE GRID',
+            'Legolas Shoulder Precision': 'SNIPER CALIBRATION MODE',
+            'Strength of the Rohirrim': 'RAPID DEPLOYMENT FORCE',
+
+            // Arm Specialization
+            'Dwarven Arm Specialization': 'HEAVY ORDINANCE PROTOCOL',
+            'Forge Arm Development': 'WEAPON SYSTEMS UPGRADE',
+            'Mithril Biceps Triceps Focus': 'DUAL CANNON PROTOCOL',
+            'Gimli Peak Arms': 'MAXIMUM FIREPOWER MODE',
+            'Moria Arm Builder': 'DEEP MINING PROTOCOL',
+            'Battle of Pelennor Arms': 'FULL COMBAT ENGAGEMENT',
+            'Strength & Honor Focus': 'LOYALTY SUBROUTINE',
+            'Swords Reforged Protocol': 'WEAPONS RECONSTRUCTION',
+
+            // Chest Specialization
+            'Mithril Chest Focus': 'ARMOR PLATING PROTOCOL',
+            'Forge Pec Development': 'CORE CONSTRUCTION MODE',
+            'Dwarven Chest Builder': 'REINFORCED HULL PROTOCOL',
+            'Boromir Chest Protocol': 'SHIELD WALL SEQUENCE',
+            'Shield Wall Pec Session': 'BARRIER DEFENSE GRID',
+            'Armor of Gondor Build': 'FORTRESS ARMOR MODE',
+            'King\'s Chest Hypertrophy': 'COMMAND CORE EXPANSION',
+            'Uruk-Hai Chest Power': 'BERSERKER BATTLE MODE',
+
+            // Shoulder Specialization
+            'Elven Shoulder Focus': 'AERIAL TARGETING SYSTEM',
+            'Forge Deltoid Builder': 'JOINT FABRICATION MODE',
+            'Eagles Are Coming Delts': 'AERIAL ASSAULT PROTOCOL',
+            'Beacon Hill Shoulders': 'SIGNAL TOWER PROTOCOL',
+            'White Tree Deltoid Build': 'NEURAL BRANCH GROWTH',
+            'Strider Shoulder Protocol': 'RANGER RECON MODE',
+            'Horn of Gondor Session': 'ALERT SYSTEM ACTIVATION',
+            'Shadowfax Shoulder Speed': 'HYPERSPEED PROTOCOL'
+        };
+
+        function translateRoutineName(lotrName) {
+            if (currentTheme === 'terminator') {
+                return nameTranslations[lotrName] || lotrName.toUpperCase().replace(/[⚔🌊⛰🛡🎯]/g, '◉');
+            }
+            return lotrName;
+        }
+
+        const themes = {
+            lotr: {
+                title: 'Fellowship of Gains',
+                subtitle: 'The Quest for Legendary Strength',
+                configTitle: '⚙ Training Configuration',
+                configButton: 'Configuration',
+                saveConfigBtn: '💾 Save Configuration',
+                resetConfigBtn: '🔄 Reset to Defaults',
+                cancelConfigBtn: '✖ Cancel',
+                stat1: 'Quests Completed',
+                stat2: 'Forged Skills',
+                stat3: 'Elite Training',
+                stat4: 'Last Journey',
+                generateBtn: '⚔ Forge New Quest',
+                publishBtn: '📜 Send to Hevy',
+                loadingText: 'The Council convenes... Forging your legendary routine...',
+                strategies: {
+                    'pyramid': '⛰ Ascent of Doom',
+                    'reverse-pyramid': '⚔ Warrior\'s Descent',
+                    'wave': '🌊 Tides of Power',
+                    'flat': '🛡 Steadfast Hold'
+                },
+                exerciseTypes: {
+                    compound: '⚔ Foundation',
+                    isolation: '🎯 Precision'
+                },
+                routineMeta: {
+                    duration: '⏱ Quest Duration:',
+                    exercises: '⚔ Trials:'
+                },
+                strategyLabel: 'Battle Plan:',
+                successMsg: '⚔ Quest forged successfully! Review your legendary routine and send it to Hevy when ready.',
+                publishSuccessMsg: '⚔ Victory! Quest "{title}" has been inscribed in the annals of Hevy. Quest ID: {id}',
+                errorMsg: '⚠ The path is blocked: ',
+                publishErrorMsg: '⚠ The messenger was waylaid: ',
+                publishingText: '📜 Sending to Hevy...',
+                publishedText: '✓ Quest Recorded',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            },
+            terminator: {
+                title: 'SKYNET PROTOCOL',
+                subtitle: 'Neural Net Training System',
+                configTitle: '◉ SYSTEM CONFIGURATION',
+                configButton: 'CONFIG',
+                saveConfigBtn: '▣ SAVE PARAMETERS',
+                resetConfigBtn: '🔄 RESET DEFAULTS',
+                cancelConfigBtn: '✖ ABORT',
+                stat1: 'Missions Executed',
+                stat2: 'Combat Protocols',
+                stat3: 'Active Targets',
+                stat4: 'Last Deployment',
+                generateBtn: '◉ INITIATE PROTOCOL',
+                publishBtn: '▣ UPLOAD TO SYSTEM',
+                loadingText: 'ANALYZING DATA... CALCULATING OPTIMAL PROTOCOL...',
+                strategies: {
+                    'pyramid': '▲ ESCALATION PROTOCOL',
+                    'reverse-pyramid': '▼ TERMINATION SEQUENCE',
+                    'wave': '≈ FLUCTUATION PATTERN',
+                    'flat': '▬ STEADY STATE'
+                },
+                exerciseTypes: {
+                    compound: '◉ PRIMARY',
+                    isolation: '◎ SECONDARY'
+                },
+                routineMeta: {
+                    duration: '⚡ DURATION:',
+                    exercises: '◉ OBJECTIVES:'
+                },
+                strategyLabel: 'EXECUTION MODE:',
+                successMsg: '◉ PROTOCOL GENERATED. REVIEW AND UPLOAD TO SYSTEM.',
+                publishSuccessMsg: '✓ PROTOCOL "{title}" UPLOADED. SYSTEM ID: {id}',
+                errorMsg: '⚠ SYSTEM ERROR: ',
+                publishErrorMsg: '⚠ UPLOAD FAILED: ',
+                publishingText: '▣ UPLOADING...',
+                publishedText: '✓ UPLOADED',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            },
+            cyberpunk: {
+                title: 'NEON RUSH PROTOCOL',
+                subtitle: 'Neural Enhancement • Street Samurai Training',
+                configTitle: '◆ CHROME SETTINGS',
+                configButton: 'JACK IN',
+                saveConfigBtn: '◆ SYNC DATA',
+                resetConfigBtn: '⟲ FACTORY RESET',
+                cancelConfigBtn: '✕ DISCONNECT',
+                stat1: 'Runs Completed',
+                stat2: 'Chrome Installed',
+                stat3: 'Active Mods',
+                stat4: 'Last Upload',
+                generateBtn: '◆ GENERATE PROTOCOL',
+                publishBtn: '▲ UPLOAD TO NET',
+                loadingText: 'JACKING IN... NEURAL SYNC IN PROGRESS...',
+                strategies: {
+                    'pyramid': '▲ ESCALATION MOD',
+                    'reverse-pyramid': '▼ DESCENT HACK',
+                    'wave': '≋ PULSE PATTERN',
+                    'flat': '━ STEADY CHROME'
+                },
+                exerciseTypes: {
+                    compound: '◆ CORE MODS',
+                    isolation: '◇ FINE TUNE'
+                },
+                routineMeta: {
+                    duration: '⚡ NET TIME:',
+                    exercises: '◆ UPGRADES:'
+                },
+                strategyLabel: 'EXECUTION PROTOCOL:',
+                successMsg: '◆ PROTOCOL COMPILED. REVIEW YOUR CHROME LOADOUT.',
+                publishSuccessMsg: '◆ PROTOCOL "{title}" UPLOADED TO NET. ID: {id}',
+                errorMsg: '⚠ SYSTEM GLITCH: ',
+                publishErrorMsg: '⚠ UPLOAD FAILED: ',
+                publishingText: '▲ UPLOADING...',
+                publishedText: '✓ SYNCED',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            },
+            viking: {
+                title: 'VALHALLA PROTOCOL',
+                subtitle: 'Warriors of the North • Path to Asgard',
+                configTitle: '❄ WARRIOR COUNCIL',
+                configButton: 'WAR COUNCIL',
+                saveConfigBtn: '⚔ FORGE OATH',
+                resetConfigBtn: '↻ RESTORE HONOR',
+                cancelConfigBtn: '✕ RETREAT',
+                stat1: 'Raids Completed',
+                stat2: 'Battle Skills',
+                stat3: 'Active Warriors',
+                stat4: 'Last Conquest',
+                generateBtn: '⚔ SUMMON WARRIORS',
+                publishBtn: '🛡 ETCH IN RUNES',
+                loadingText: 'THE NORNS WEAVE... YOUR FATE IS BEING CARVED...',
+                strategies: {
+                    'pyramid': '⛰ MOUNTAIN CLIMB',
+                    'reverse-pyramid': '⚡ THOR\'S DESCENT',
+                    'wave': '〰 OCEAN WAVES',
+                    'flat': '━ SHIELD WALL'
+                },
+                exerciseTypes: {
+                    compound: '⚔ WARRIOR CORE',
+                    isolation: '🗡 PRECISION STRIKE'
+                },
+                routineMeta: {
+                    duration: '⏳ BATTLE LENGTH:',
+                    exercises: '⚔ TRIALS:'
+                },
+                strategyLabel: 'BATTLE STRATEGY:',
+                successMsg: '⚔ BATTLE PLAN FORGED. PREPARE FOR VALHALLA.',
+                publishSuccessMsg: '⚔ SAGA "{title}" CARVED IN RUNES. ID: {id}',
+                errorMsg: '⚠ THE GODS FROWN: ',
+                publishErrorMsg: '⚠ RUNE CARVING FAILED: ',
+                publishingText: '🛡 CARVING RUNES...',
+                publishedText: '✓ HONORED',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            },
+            matrix: {
+                title: 'THE MATRIX PROTOCOL',
+                subtitle: 'There Is No Spoon • Free Your Mind',
+                configTitle: '◉ SYSTEM PARAMETERS',
+                configButton: 'RED PILL',
+                saveConfigBtn: '▣ COMMIT CODE',
+                resetConfigBtn: '⟲ RELOAD MATRIX',
+                cancelConfigBtn: '✕ JACK OUT',
+                stat1: 'Simulations Run',
+                stat2: 'Programs Loaded',
+                stat3: 'Active Agents',
+                stat4: 'Last Dive',
+                generateBtn: '◉ RUN SIMULATION',
+                publishBtn: '▣ UPLOAD PROGRAM',
+                loadingText: 'ENTERING THE MATRIX... LOADING COMBAT PROGRAM...',
+                strategies: {
+                    'pyramid': '▲ ASCENDING CODE',
+                    'reverse-pyramid': '▼ CASCADE PROTOCOL',
+                    'wave': '≈ RIPPLE EFFECT',
+                    'flat': '━ BASELINE CODE'
+                },
+                exerciseTypes: {
+                    compound: '◉ PRIMARY NODE',
+                    isolation: '◎ SUBNET'
+                },
+                routineMeta: {
+                    duration: '⚡ RUNTIME:',
+                    exercises: '◉ MODULES:'
+                },
+                strategyLabel: 'EXECUTION MODE:',
+                successMsg: '◉ PROGRAM COMPILED. REVIEW THE CODE.',
+                publishSuccessMsg: '✓ PROGRAM "{title}" UPLOADED. NODE ID: {id}',
+                errorMsg: '⚠ ANOMALY DETECTED: ',
+                publishErrorMsg: '⚠ UPLOAD REJECTED: ',
+                publishingText: '▣ TRANSMITTING...',
+                publishedText: '✓ LOADED',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            },
+            samurai: {
+                title: 'BUSHIDO DISCIPLINE',
+                subtitle: 'Way of the Warrior • Path of Honor',
+                configTitle: '⛩ DOJO SETTINGS',
+                configButton: 'ENTER DOJO',
+                saveConfigBtn: '🗡 SEAL OATH',
+                resetConfigBtn: '↻ RESTORE BALANCE',
+                cancelConfigBtn: '✕ LEAVE DOJO',
+                stat1: 'Battles Fought',
+                stat2: 'Kata Mastered',
+                stat3: 'Active Training',
+                stat4: 'Last Practice',
+                generateBtn: '🗡 FORGE DISCIPLINE',
+                publishBtn: '📜 INSCRIBE SCROLL',
+                loadingText: 'MEDITATING... THE SENSEI PREPARES YOUR PATH...',
+                strategies: {
+                    'pyramid': '⛰ MOUNTAIN ASCENT',
+                    'reverse-pyramid': '🗡 KATANA STRIKE',
+                    'wave': '〰 FLOWING WATER',
+                    'flat': '━ IRON STANCE'
+                },
+                exerciseTypes: {
+                    compound: '⚔ FUNDAMENTAL',
+                    isolation: '🎯 REFINED FORM'
+                },
+                routineMeta: {
+                    duration: '⏱ SESSION TIME:',
+                    exercises: '🗡 DISCIPLINES:'
+                },
+                strategyLabel: 'TRAINING METHOD:',
+                successMsg: '🗡 DISCIPLINE FORGED. REVIEW YOUR PATH TO MASTERY.',
+                publishSuccessMsg: '🗡 SCROLL "{title}" INSCRIBED WITH HONOR. ID: {id}',
+                errorMsg: '⚠ PATH BLOCKED: ',
+                publishErrorMsg: '⚠ INSCRIPTION FAILED: ',
+                publishingText: '📜 INSCRIBING...',
+                publishedText: '✓ HONORED',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            }
+        };
+
+        // Store the last routine for re-rendering on theme change
+        let lastRoutineData = null;
+
+        function toggleTheme() {
+            openThemeMenu();
+        }
+
+        function updateThemeContent() {
+            const theme = themes[currentTheme];
+            document.getElementById('headerTitle').textContent = theme.title;
+            document.getElementById('headerSubtitle').textContent = theme.subtitle;
+            document.getElementById('configTitle').textContent = theme.configTitle;
+            document.getElementById('configButtonText').textContent = theme.configButton;
+            document.getElementById('saveConfigText').textContent = theme.saveConfigBtn;
+            document.getElementById('resetConfigText').textContent = theme.resetConfigBtn;
+            document.getElementById('cancelConfigText').textContent = theme.cancelConfigBtn;
+            document.getElementById('stat1Label').textContent = theme.stat1;
+            document.getElementById('stat2Label').textContent = theme.stat2;
+            document.getElementById('stat3Label').textContent = theme.stat3;
+            document.getElementById('stat4Label').textContent = theme.stat4;
+            document.getElementById('generateBtnText').textContent = theme.generateBtn;
+            document.getElementById('publishBtnText').textContent = theme.publishBtn;
+            document.getElementById('loadingText').textContent = theme.loadingText;
+            document.getElementById('themeIcon').textContent = theme.toggleIcon;
+            document.getElementById('themeText').textContent = theme.toggleText;
+        }
+
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme && themes[savedTheme]) {
+                currentTheme = savedTheme;
+                document.body.setAttribute('data-theme', savedTheme);
+                updateThemeContent();
+            }
+            loadStats();
+            loadConfiguration();
+        });
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+
+                document.getElementById('totalWorkouts').textContent = stats.totalWorkouts;
+                document.getElementById('totalExercises').textContent = stats.totalExercises;
+                document.getElementById('focusExercises').textContent = stats.focusedExercises;
+
+                if (stats.lastWorkout) {
+                    const date = new Date(stats.lastWorkout);
+                    document.getElementById('lastWorkout').textContent = date.toLocaleDateString();
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        async function generateRoutine() {
+            const generateBtn = document.getElementById('generateBtn');
+            const publishBtn = document.getElementById('publishBtn');
+            const loadingState = document.getElementById('loadingState');
+            const routinePreview = document.getElementById('routinePreview');
+
+            // Show loading
+            generateBtn.disabled = true;
+            publishBtn.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            routinePreview.classList.add('hidden');
+            clearAlerts();
+
+            try {
+                const response = await fetch('/api/generate', { method: 'POST' });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate routine');
+                }
+
+                // Display routine
+                displayRoutine(data.routine);
+
+                // Show publish button
+                publishBtn.classList.remove('hidden');
+                publishBtn.disabled = false;
+
+                const theme = themes[currentTheme];
+                showAlert(theme.successMsg, 'success');
+
+            } catch (error) {
+                const theme = themes[currentTheme];
+                showAlert(theme.errorMsg + error.message, 'error');
+            } finally {
+                loadingState.classList.add('hidden');
+                generateBtn.disabled = false;
+            }
+        }
+
+        function displayRoutine(routine) {
+            // Store routine data for theme switching
+            lastRoutineData = routine;
+
+            const preview = document.getElementById('routinePreview');
+            const theme = themes[currentTheme];
+
+            // Translate routine name based on theme
+            const translatedTitle = translateRoutineName(routine.title);
+
+            let html = `
+                <div class="routine-header">
+                    <h2>${translatedTitle}</h2>
+                    <div class="routine-meta">
+                        <div><strong>${theme.routineMeta.duration}</strong> ${routine.totalMinutes} minutes</div>
+                        <div><strong>${theme.routineMeta.exercises}</strong> ${routine.exercises.length}</div>
+                    </div>
+                    <div class="routine-notes">${routine.notes}</div>
+                </div>
+            `;
+
+            routine.exercises.forEach((exercise, idx) => {
+                const typeClass = exercise.isCompound ? 'compound' : 'isolation';
+                const typeLabel = exercise.isCompound ? theme.exerciseTypes.compound : theme.exerciseTypes.isolation;
+                const strategyName = theme.strategies[exercise.progressionStrategy] || 'STANDARD';
+
+                html += `
+                    <div class="exercise-card">
+                        <div class="exercise-header">
+                            <div>
+                                <div class="exercise-name">${idx + 1}. ${exercise.name}</div>
+                                <div class="strategy-info">
+                                    <span class="strategy-label">${theme.strategyLabel}</span> ${strategyName}
+                                </div>
+                            </div>
+                            <span class="exercise-type ${typeClass}">${typeLabel}</span>
+                        </div>
+
+                        <div class="sets-list">
+                            <div class="set-row header">
+                                <div>Set</div>
+                                <div>Weight</div>
+                                <div>Reps</div>
+                                <div>Rest</div>
+                            </div>
+                `;
+
+                exercise.sets.forEach((set, setIdx) => {
+                    const weight = set.targetWeight ? `${set.targetWeight} kg` : 'Bodyweight';
+                    html += `
+                        <div class="set-row">
+                            <div class="set-label">Set ${setIdx + 1}</div>
+                            <div class="set-value">${weight}</div>
+                            <div class="set-value">${set.reps} reps</div>
+                            <div class="set-value">${set.restSeconds}s</div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div class="exercise-notes">${exercise.notes}</div>
+                    </div>
+                `;
+            });
+
+            preview.innerHTML = html;
+            preview.classList.remove('hidden');
+        }
+
+        async function publishRoutine() {
+            const publishBtn = document.getElementById('publishBtn');
+            const theme = themes[currentTheme];
+
+            publishBtn.disabled = true;
+            publishBtn.innerHTML = `<span>${theme.publishingText}</span>`;
+            clearAlerts();
+
+            try {
+                const response = await fetch('/api/publish', { method: 'POST' });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to publish routine');
+                }
+
+                const msg = theme.publishSuccessMsg
+                    .replace('{title}', data.title)
+                    .replace('{id}', data.routineId);
+                showAlert(msg, 'success');
+                publishBtn.innerHTML = `<span>${theme.publishedText}</span>`;
+
+                // Reload stats
+                setTimeout(loadStats, 1000);
+
+            } catch (error) {
+                showAlert(theme.publishErrorMsg + error.message, 'error');
+                publishBtn.innerHTML = `<span>${theme.publishBtn}</span>`;
+                publishBtn.disabled = false;
+            }
+        }
+
+        function showAlert(message, type) {
+            const container = document.getElementById('alertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            container.innerHTML = `<div class="alert ${alertClass}">${message.replace(/\n/g, '<br>')}</div>`;
+        }
+
+        function clearAlerts() {
+            document.getElementById('alertContainer').innerHTML = '';
+        }
+
+        // Configuration Panel Functions
+        function openConfigPanel() {
+            document.getElementById('configOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeConfigPanel() {
+            document.getElementById('configOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            clearConfigAlerts();
+        }
+
+        function closeConfigPanelOnOverlay(event) {
+            if (event.target === document.getElementById('configOverlay')) {
+                closeConfigPanel();
+            }
+        }
+
+        async function loadConfiguration() {
+            try {
+                const response = await fetch('/api/config');
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const config = await response.json();
+
+                // Validate config structure
+                if (!config.hevy || !config.training) {
+                    throw new Error('Invalid configuration structure received from server');
+                }
+
+                currentConfig = config;
+
+                // Populate API keys (masked keys indicate they are set)
+                // Don't overwrite if user has already entered a key
+                if (config.anthropicApiKey && config.anthropicApiKey.startsWith('***')) {
+                    document.getElementById('anthropicApiKey').placeholder = 'Key configured (' + config.anthropicApiKey + ')';
+                } else if (config.anthropicApiKey) {
+                    document.getElementById('anthropicApiKey').value = config.anthropicApiKey;
+                }
+
+                if (config.hevyApiKey && config.hevyApiKey.startsWith('***')) {
+                    document.getElementById('hevyApiKey').placeholder = 'Key configured (' + config.hevyApiKey + ')';
+                } else if (config.hevyApiKey) {
+                    document.getElementById('hevyApiKey').value = config.hevyApiKey;
+                }
+
+                // Populate form fields and default value labels
+                document.getElementById('apiTimeout').value = config.hevy.timeout || 30000;
+                document.getElementById('defaultApiTimeout').textContent = `Default: ${config.hevy.timeout || 30000}`;
+
+                document.getElementById('apiRetries').value = config.hevy.retries || 3;
+                document.getElementById('defaultApiRetries').textContent = `Default: ${config.hevy.retries || 3}`;
+
+                document.getElementById('apiPageSize').value = config.hevy.pageSize || 100;
+                document.getElementById('defaultApiPageSize').textContent = `Default: ${config.hevy.pageSize || 100}`;
+
+                document.getElementById('targetMinutes').value = config.training.targetSessionMinutes || 60;
+                document.getElementById('defaultTargetMinutes').textContent = `Default: ${config.training.targetSessionMinutes || 60}`;
+
+                document.getElementById('sessionsPerWeek').value = config.training.sessionsPerWeek || 3;
+                document.getElementById('defaultSessionsPerWeek').textContent = `Default: ${config.training.sessionsPerWeek || 3}`;
+
+                document.getElementById('historyMonths').value = config.training.historyMonths || 12;
+                document.getElementById('defaultHistoryMonths').textContent = `Default: ${config.training.historyMonths || 12}`;
+
+                document.getElementById('exerciseCountMin').value = config.training.exerciseCount?.[0] || 6;
+                document.getElementById('defaultExerciseCountMin').textContent = `Default: ${config.training.exerciseCount?.[0] || 6}`;
+
+                document.getElementById('exerciseCountMax').value = config.training.exerciseCount?.[1] || 8;
+                document.getElementById('defaultExerciseCountMax').textContent = `Default: ${config.training.exerciseCount?.[1] || 8}`;
+
+                document.getElementById('setsMin').value = config.training.hypertrophy?.setsPerExercise?.[0] || 3;
+                document.getElementById('defaultSetsMin').textContent = `Default: ${config.training.hypertrophy?.setsPerExercise?.[0] || 3}`;
+
+                document.getElementById('setsMax').value = config.training.hypertrophy?.setsPerExercise?.[1] || 4;
+                document.getElementById('defaultSetsMax').textContent = `Default: ${config.training.hypertrophy?.setsPerExercise?.[1] || 4}`;
+
+                document.getElementById('repsMin').value = config.training.hypertrophy?.repsRange?.[0] || 6;
+                document.getElementById('defaultRepsMin').textContent = `Default: ${config.training.hypertrophy?.repsRange?.[0] || 6}`;
+
+                document.getElementById('repsMax').value = config.training.hypertrophy?.repsRange?.[1] || 12;
+                document.getElementById('defaultRepsMax').textContent = `Default: ${config.training.hypertrophy?.repsRange?.[1] || 12}`;
+
+                document.getElementById('restCompound').value = config.training.hypertrophy?.restCompound || 120;
+                document.getElementById('defaultRestCompound').textContent = `Default: ${config.training.hypertrophy?.restCompound || 120}s`;
+
+                document.getElementById('restIsolation').value = config.training.hypertrophy?.restIsolation || 90;
+                document.getElementById('defaultRestIsolation').textContent = `Default: ${config.training.hypertrophy?.restIsolation || 90}s`;
+
+                // Populate muscle groups
+                renderMuscleSelector(config.training.focusMuscles || []);
+            } catch (error) {
+                console.error('Failed to load configuration:', error);
+                showConfigAlert('Failed to load configuration: ' + error.message, 'error');
+            }
+        }
+
+        function renderMuscleSelector(selectedMuscles) {
+            const container = document.getElementById('muscleSelector');
+            container.innerHTML = '';
+
+            availableMuscles.forEach(muscle => {
+                const chip = document.createElement('div');
+                chip.className = 'muscle-chip';
+                if (selectedMuscles.includes(muscle)) {
+                    chip.classList.add('active');
+                }
+                const span = document.createElement('span');
+                span.textContent = muscle.replace('_', ' ');
+                chip.appendChild(span);
+                chip.onclick = () => toggleMuscle(chip, muscle);
+                container.appendChild(chip);
+            });
+        }
+
+        function toggleMuscle(chip, muscle) {
+            chip.classList.toggle('active');
+        }
+
+        function getSelectedMuscles() {
+            const chips = document.querySelectorAll('.muscle-chip.active');
+            return Array.from(chips).map(chip =>
+                chip.querySelector('span').textContent.toLowerCase().replace(' ', '_')
+            );
+        }
+
+        async function saveConfiguration() {
+            const saveBtn = document.querySelector('.config-actions .btn-primary');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span>💾 Saving...</span>';
+            clearConfigAlerts();
+
+            try {
+                // Validate inputs
+                const exerciseMin = parseInt(document.getElementById('exerciseCountMin').value);
+                const exerciseMax = parseInt(document.getElementById('exerciseCountMax').value);
+                if (exerciseMin > exerciseMax) {
+                    throw new Error('Min exercises cannot be greater than max exercises');
+                }
+
+                const setsMin = parseInt(document.getElementById('setsMin').value);
+                const setsMax = parseInt(document.getElementById('setsMax').value);
+                if (setsMin > setsMax) {
+                    throw new Error('Min sets cannot be greater than max sets');
+                }
+
+                const repsMin = parseInt(document.getElementById('repsMin').value);
+                const repsMax = parseInt(document.getElementById('repsMax').value);
+                if (repsMin > repsMax) {
+                    throw new Error('Min reps cannot be greater than max reps');
+                }
+
+                const selectedMuscles = getSelectedMuscles();
+                if (selectedMuscles.length === 0) {
+                    throw new Error('Please select at least one muscle group');
+                }
+
+                const updatedConfig = {
+                    anthropicApiKey: document.getElementById('anthropicApiKey').value.trim(),
+                    hevyApiKey: document.getElementById('hevyApiKey').value.trim(),
+                    hevy: {
+                        timeout: parseInt(document.getElementById('apiTimeout').value),
+                        retries: parseInt(document.getElementById('apiRetries').value),
+                        pageSize: parseInt(document.getElementById('apiPageSize').value)
+                    },
+                    training: {
+                        targetSessionMinutes: parseInt(document.getElementById('targetMinutes').value),
+                        sessionsPerWeek: parseInt(document.getElementById('sessionsPerWeek').value),
+                        historyMonths: parseInt(document.getElementById('historyMonths').value),
+                        exerciseCount: [exerciseMin, exerciseMax],
+                        focusMuscles: selectedMuscles,
+                        hypertrophy: {
+                            setsPerExercise: [setsMin, setsMax],
+                            repsRange: [repsMin, repsMax],
+                            restCompound: parseInt(document.getElementById('restCompound').value),
+                            restIsolation: parseInt(document.getElementById('restIsolation').value)
+                        }
+                    }
+                };
+
+                const response = await fetch('/api/config', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedConfig)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to save configuration');
+                }
+
+                currentConfig = data.config;
+                const theme = themes[currentTheme];
+                const successMsg = currentTheme === 'lotr'
+                    ? '⚔ Configuration saved successfully! Your new settings are now active.'
+                    : '✓ CONFIGURATION UPDATED. NEW PARAMETERS ACTIVE.';
+                showConfigAlert(successMsg, 'success');
+
+                // Update default value labels with new values
+                loadConfiguration();
+
+                // Reload stats to reflect any changes
+                setTimeout(loadStats, 500);
+
+                // Close panel after short delay to show success message
+                setTimeout(closeConfigPanel, 2000);
+
+            } catch (error) {
+                const theme = themes[currentTheme];
+                const errorPrefix = currentTheme === 'lotr' ? '⚠ ' : '⚠ ERROR: ';
+                showConfigAlert(errorPrefix + error.message, 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = originalText;
+            }
+        }
+
+        function resetConfiguration() {
+            if (currentConfig) {
+                // Reload form with current saved config
+                document.getElementById('apiTimeout').value = currentConfig.hevy.timeout;
+                document.getElementById('apiRetries').value = currentConfig.hevy.retries;
+                document.getElementById('apiPageSize').value = currentConfig.hevy.pageSize;
+
+                document.getElementById('targetMinutes').value = currentConfig.training.targetSessionMinutes;
+                document.getElementById('sessionsPerWeek').value = currentConfig.training.sessionsPerWeek;
+                document.getElementById('historyMonths').value = currentConfig.training.historyMonths;
+                document.getElementById('exerciseCountMin').value = currentConfig.training.exerciseCount[0];
+                document.getElementById('exerciseCountMax').value = currentConfig.training.exerciseCount[1];
+
+                document.getElementById('setsMin').value = currentConfig.training.hypertrophy.setsPerExercise[0];
+                document.getElementById('setsMax').value = currentConfig.training.hypertrophy.setsPerExercise[1];
+                document.getElementById('repsMin').value = currentConfig.training.hypertrophy.repsRange[0];
+                document.getElementById('repsMax').value = currentConfig.training.hypertrophy.repsRange[1];
+                document.getElementById('restCompound').value = currentConfig.training.hypertrophy.restCompound;
+                document.getElementById('restIsolation').value = currentConfig.training.hypertrophy.restIsolation;
+
+                renderMuscleSelector(currentConfig.training.focusMuscles);
+
+                const theme = themes[currentTheme];
+                const msg = currentTheme === 'lotr'
+                    ? '🔄 Configuration reset to saved values.'
+                    : '🔄 PARAMETERS RESTORED.';
+                showConfigAlert(msg, 'success');
+            }
+        }
+
+        function showConfigAlert(message, type) {
+            const container = document.getElementById('configAlertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            container.innerHTML = `<div class="alert ${alertClass}" style="margin-top: 20px;">${message.replace(/\n/g, '<br>')}</div>`;
+        }
+
+        function clearConfigAlerts() {
+            document.getElementById('configAlertContainer').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

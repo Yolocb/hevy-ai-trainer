@@ -1,0 +1,38 @@
+{
+  "hevy": {
+    "baseUrl": "https://api.hevyapp.com/v1",
+    "timeout": 30000,
+    "retries": 3,
+    "pageSize": 100
+  },
+  "training": {
+    "targetSessionMinutes": 60,
+    "sessionsPerWeek": 3,
+    "focusMuscles": [
+      "chest",
+      "shoulders",
+      "biceps",
+      "triceps",
+      "lats",
+      "upper_back"
+    ],
+    "hypertrophy": {
+      "setsPerExercise": [
+        3,
+        4
+      ],
+      "repsRange": [
+        6,
+        12
+      ],
+      "restCompound": 120,
+      "restIsolation": 90,
+      "progressiveOverload": 2.5
+    },
+    "exerciseCount": [
+      6,
+      8
+    ],
+    "historyMonths": 12
+  }
+}
