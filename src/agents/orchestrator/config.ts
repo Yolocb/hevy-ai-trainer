@@ -16,6 +16,10 @@ export interface AppConfig {
     pageSize: number;
   };
   training: TrainingConfig;
+  anthropicApiKey?: string;
+  hevyApiKey?: string;
+  proxyUrl?: string;
+  proxyApiKey?: string;
 }
 
 export function loadConfig(): AppConfig {
@@ -35,6 +39,10 @@ export function loadConfig(): AppConfig {
           ...config.training.hypertrophy,
         },
       },
+      anthropicApiKey: config.anthropicApiKey,
+      hevyApiKey: config.hevyApiKey,
+      proxyUrl: config.proxyUrl,
+      proxyApiKey: config.proxyApiKey,
     };
   } catch (error) {
     console.warn('⚠️  Could not load config file, using defaults');

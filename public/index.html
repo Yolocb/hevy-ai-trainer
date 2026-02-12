@@ -1798,6 +1798,31 @@
                     </div>
                 </div>
 
+                <!-- AI Proxy Settings -->
+                <div class="config-section">
+                    <h3>🔌 AI Proxy Configuration</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9em; margin-bottom: 20px;">
+                        Configure a local proxy to access your AI backend.
+                        <strong>Leave empty to use direct Anthropic API connection.</strong>
+                    </p>
+                    <div class="config-grid">
+                        <div class="config-field" style="grid-column: 1 / -1;">
+                            <label for="proxyUrl">
+                                <span>AI Proxy URL</span>
+                                <span class="default-value">Example: http://localhost:8080/api</span>
+                            </label>
+                            <input type="text" id="proxyUrl" placeholder="http://your-proxy-url">
+                        </div>
+                        <div class="config-field" style="grid-column: 1 / -1;">
+                            <label for="proxyApiKey">
+                                <span>AI Proxy API Key</span>
+                                <span class="default-value">Authentication key for your proxy</span>
+                            </label>
+                            <input type="password" id="proxyApiKey" placeholder="Your proxy API key">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Hevy API Settings -->
                 <div class="config-section">
                     <h3>Hevy API Settings</h3>
@@ -2621,6 +2646,17 @@
                     document.getElementById('hevyApiKey').value = config.hevyApiKey;
                 }
 
+                // Populate proxy configuration
+                if (config.proxyUrl) {
+                    document.getElementById('proxyUrl').value = config.proxyUrl;
+                }
+
+                if (config.proxyApiKey && config.proxyApiKey.startsWith('***')) {
+                    document.getElementById('proxyApiKey').placeholder = 'Key configured (' + config.proxyApiKey + ')';
+                } else if (config.proxyApiKey) {
+                    document.getElementById('proxyApiKey').value = config.proxyApiKey;
+                }
+
                 // Populate form fields and default value labels
                 document.getElementById('apiTimeout').value = config.hevy.timeout || 30000;
                 document.getElementById('defaultApiTimeout').textContent = `Default: ${config.hevy.timeout || 30000}`;
@@ -2736,6 +2772,8 @@
                 const updatedConfig = {
                     anthropicApiKey: document.getElementById('anthropicApiKey').value.trim(),
                     hevyApiKey: document.getElementById('hevyApiKey').value.trim(),
+                    proxyUrl: document.getElementById('proxyUrl').value.trim(),
+                    proxyApiKey: document.getElementById('proxyApiKey').value.trim(),
                     hevy: {
                         timeout: parseInt(document.getElementById('apiTimeout').value),
                         retries: parseInt(document.getElementById('apiRetries').value),

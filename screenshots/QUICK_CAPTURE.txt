@@ -1,0 +1,52 @@
+🎯 QUICK SCREENSHOT CAPTURE GUIDE
+=====================================
+
+SERVER: http://localhost:3000
+
+CAPTURE METHOD: Win + Shift + S (Windows Snipping Tool)
+
+📸 SCREENSHOTS TO CAPTURE:
+=====================================
+
+1. hero-lotr-dashboard.png
+   - Open: http://localhost:3000
+   - Theme: LOTR (default)
+   - Show: Full dashboard
+
+2. config-cyberpunk.png
+   - Theme: Click button → Cyberpunk
+   - Click: "JACK IN" button
+   - Show: Config panel with API keys
+
+3. theme-selector-viking.png
+   - Theme: Click button → Viking  
+   - Click: Theme button again
+   - Show: Theme selection menu
+
+4. matrix-theme-full.png
+   - Theme: Click button → Matrix
+   - Show: Full dashboard
+
+5. samurai-config.png
+   - Theme: Click button → Samurai
+   - Click: "ENTER DOJO"
+   - Show: Config panel
+
+6. terminator-dashboard.png
+   - Theme: Click button → Terminator
+   - Show: Full dashboard
+
+💡 TIPS:
+- Press F11 for fullscreen
+- Hide mouse cursor
+- Clean browser (no bookmarks bar)
+- Resolution: 1920x1080
+- Format: PNG
+
+✅ AFTER CAPTURING:
+cd hevy-ai-trainer
+git add screenshots/
+git commit -m "Add UI screenshots for all 6 themes"
+git push origin main
+
+🎨 Then add to README.md!

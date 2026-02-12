@@ -4,6 +4,7 @@
 
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import axios from 'axios';
 import * as dotenv from 'dotenv';
 import { HevyApiClient } from './agents/hevy-api-architect/client';
 import { createHevyConfig } from './agents/hevy-api-architect/config';
@@ -25,10 +26,43 @@ const PORT = process.env.PORT || 3000;
 function getApiKeys() {
   const config = loadConfig();
   return {
-    anthropicApiKey: process.env.ANTHROPIC_API_KEY || (config as any).anthropicApiKey || '',
-    hevyApiKey: process.env.HEVY_API_KEY || (config as any).hevyApiKey || ''
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY || config.anthropicApiKey || '',
+    hevyApiKey: process.env.HEVY_API_KEY || config.hevyApiKey || '',
+    proxyUrl: process.env.PROXY_URL || config.proxyUrl || '',
+    proxyApiKey: process.env.PROXY_API_KEY || config.proxyApiKey || ''
   };
 }
+
+/**
+ * Call AI backend via proxy or direct Anthropic API
+ */
+async function callAIBackend(prompt: string): Promise<string> {
+  const { anthropicApiKey, proxyUrl, proxyApiKey } = getApiKeys();
+
+  // If proxy is configured, use it
+  if (proxyUrl) {
+    const headers: any = {
+      'Content-Type': 'application/json'
+    };
+
+    // Add proxy API key to headers if configured
+    if (proxyApiKey) {
+      headers['Authorization'] = `Bearer ${proxyApiKey}`;
+    }
+
+    const response = await axios.post(proxyUrl, {
+      prompt: prompt,
+      model: 'claude-opus-4-6',
+      max_tokens: 4096
+    }, { headers });
+
+    return response.data.response || response.data.content || JSON.stringify(response.data);
+  } else {
+    // For now, return error if no proxy configured and no Anthropic SDK
+    throw new Error('AI backend not configured. Please configure a proxy URL in settings, or install Anthropic SDK for direct access.');
+  }
+}
+
 
 app.use(cors());
 app.use(express.json());
@@ -110,7 +144,7 @@ app.post('/api/generate', async (req: Request, res: Response) => {
   generationInProgress = true;
 
   try {
-    const { hevyApiKey, anthropicApiKey } = getApiKeys();
+    const { hevyApiKey, anthropicApiKey, proxyUrl, proxyApiKey } = getApiKeys();
 
     if (!hevyApiKey) {
       generationInProgress = false;
@@ -119,10 +153,11 @@ app.post('/api/generate', async (req: Request, res: Response) => {
       });
     }
 
-    if (!anthropicApiKey) {
+    // Check if AI backend is configured (either proxy or direct Anthropic)
+    if (!anthropicApiKey && !proxyUrl) {
       generationInProgress = false;
       return res.status(400).json({
-        error: 'Anthropic API key not configured. Please add it in Settings to use AI generation.'
+        error: 'AI backend not configured. Please add either a Proxy URL or Anthropic API key in Settings to use AI generation.'
       });
     }
 
@@ -221,8 +256,10 @@ app.get('/api/config', (req: Request, res: Response) => {
     const config = loadConfig();
 
     // Load API keys from environment variables if available
-    const anthropicApiKey = process.env.ANTHROPIC_API_KEY || (config as any).anthropicApiKey || '';
-    const hevyApiKey = process.env.HEVY_API_KEY || (config as any).hevyApiKey || '';
+    const anthropicApiKey = process.env.ANTHROPIC_API_KEY || config.anthropicApiKey || '';
+    const hevyApiKey = process.env.HEVY_API_KEY || config.hevyApiKey || '';
+    const proxyUrl = process.env.PROXY_URL || config.proxyUrl || '';
+    const proxyApiKey = process.env.PROXY_API_KEY || config.proxyApiKey || '';
 
     // Explicitly create response object
     // Note: In production, you should NEVER send API keys to the client
@@ -230,6 +267,8 @@ app.get('/api/config', (req: Request, res: Response) => {
     const responseObj = {
       anthropicApiKey: anthropicApiKey ? '***' + anthropicApiKey.slice(-4) : '', // Mask key except last 4 chars
       hevyApiKey: hevyApiKey ? '***' + hevyApiKey.slice(-4) : '', // Mask key except last 4 chars
+      proxyUrl: proxyUrl, // No need to mask URL
+      proxyApiKey: proxyApiKey ? '***' + proxyApiKey.slice(-4) : '', // Mask key except last 4 chars
       hevy: {
         baseUrl: config.hevy.baseUrl,
         timeout: config.hevy.timeout,
@@ -278,6 +317,12 @@ app.put('/api/config', async (req: Request, res: Response) => {
     }
     if (req.body.hevyApiKey) {
       updatedConfig.hevyApiKey = req.body.hevyApiKey;
+    }
+    if (req.body.proxyUrl !== undefined) {
+      updatedConfig.proxyUrl = req.body.proxyUrl;
+    }
+    if (req.body.proxyApiKey !== undefined) {
+      updatedConfig.proxyApiKey = req.body.proxyApiKey;
     }
 
     // Write to file
