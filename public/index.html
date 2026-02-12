@@ -149,6 +149,50 @@
             --theme-icon-alt: '◈';
         }
 
+        [data-theme="spartan"] {
+            --primary-color: #8b0000;
+            --primary-light: #a52a2a;
+            --primary-dark: #5c0000;
+            --secondary-color: #cd853f;
+            --secondary-light: #daa520;
+            --accent-color: #b8860b;
+            --bg-primary: #0d0d0d;
+            --bg-secondary: rgba(20, 10, 10, 0.95);
+            --bg-card: rgba(30, 20, 15, 0.9);
+            --text-primary: #f5e6d3;
+            --text-secondary: #cd853f;
+            --border-color: rgba(139, 0, 0, 0.4);
+            --shadow-color: rgba(139, 0, 0, 0.6);
+            --compound-color: #b8860b;
+            --isolation-color: #cd853f;
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Crimson Text', Georgia, serif;
+            --theme-icon: '🛡';
+            --theme-icon-alt: '⚔';
+        }
+
+        [data-theme="got"] {
+            --primary-color: #1c1c1c;
+            --primary-light: #2d2d2d;
+            --primary-dark: #0a0a0a;
+            --secondary-color: #8b7355;
+            --secondary-light: #a0826d;
+            --accent-color: #c9b037;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: rgba(15, 15, 15, 0.95);
+            --bg-card: rgba(25, 25, 25, 0.9);
+            --text-primary: #e8e8e8;
+            --text-secondary: #8b7355;
+            --border-color: rgba(139, 115, 85, 0.3);
+            --shadow-color: rgba(201, 176, 55, 0.4);
+            --compound-color: #c9b037;
+            --isolation-color: #8b7355;
+            --font-heading: 'Cinzel', serif;
+            --font-body: 'Crimson Text', Georgia, serif;
+            --theme-icon: '🐉';
+            --theme-icon-alt: '⚔';
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -362,6 +406,74 @@
             bottom: 0;
             background-image:
                 repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(188, 0, 45, 0.02) 40px, rgba(188, 0, 45, 0.02) 41px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Spartan Background */
+        [data-theme="spartan"] body {
+            background-image:
+                linear-gradient(180deg, rgba(10, 5, 5, 0.95) 0%, rgba(20, 10, 10, 0.98) 100%),
+                radial-gradient(circle at 30% 40%, rgba(139, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(205, 133, 63, 0.1) 0%, transparent 40%);
+        }
+
+        [data-theme="spartan"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 80px, rgba(139, 0, 0, 0.03) 80px, rgba(139, 0, 0, 0.03) 81px),
+                repeating-linear-gradient(-45deg, transparent, transparent 80px, rgba(205, 133, 63, 0.02) 80px, rgba(205, 133, 63, 0.02) 81px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="spartan"] body::after {
+            content: '⚔';
+            position: fixed;
+            font-size: 400px;
+            opacity: 0.02;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Game of Thrones Background */
+        [data-theme="got"] body {
+            background-image:
+                linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, rgba(15, 15, 15, 0.98) 100%),
+                radial-gradient(circle at 20% 30%, rgba(139, 115, 85, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(201, 176, 55, 0.08) 0%, transparent 50%);
+        }
+
+        [data-theme="got"] body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(139, 115, 85, 0.03) 60px, rgba(139, 115, 85, 0.03) 61px),
+                repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(201, 176, 55, 0.02) 60px, rgba(201, 176, 55, 0.02) 61px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        [data-theme="got"] body::after {
+            content: '🐉';
+            position: fixed;
+            font-size: 500px;
+            opacity: 0.015;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
             pointer-events: none;
             z-index: 0;
         }
@@ -1760,6 +1872,24 @@
                         <div class="theme-preview-color" style="background: #ffd700;"></div>
                     </div>
                 </div>
+                <div class="theme-option" data-theme="spartan" onclick="selectTheme('spartan')">
+                    <div class="theme-icon">🛡</div>
+                    <div class="theme-name">Spartan</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #8b0000;"></div>
+                        <div class="theme-preview-color" style="background: #cd853f;"></div>
+                        <div class="theme-preview-color" style="background: #b8860b;"></div>
+                    </div>
+                </div>
+                <div class="theme-option" data-theme="got" onclick="selectTheme('got')">
+                    <div class="theme-icon">🐉</div>
+                    <div class="theme-name">Game of Thrones</div>
+                    <div class="theme-preview">
+                        <div class="theme-preview-color" style="background: #1c1c1c;"></div>
+                        <div class="theme-preview-color" style="background: #8b7355;"></div>
+                        <div class="theme-preview-color" style="background: #c9b037;"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -2501,6 +2631,84 @@
                 publishErrorMsg: '⚠ INSCRIPTION FAILED: ',
                 publishingText: '📜 INSCRIBING...',
                 publishedText: '✓ HONORED',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            },
+            spartan: {
+                title: 'SPARTA PROTOCOL',
+                subtitle: 'This Is Sparta • 300 Warriors',
+                configTitle: '🛡 WAR COUNCIL',
+                configButton: 'ENTER PHALANX',
+                saveConfigBtn: '⚔ SEAL IN BLOOD',
+                resetConfigBtn: '↻ RESTORE HONOR',
+                cancelConfigBtn: '✕ RETREAT',
+                stat1: 'Battles Won',
+                stat2: 'Skills Mastered',
+                stat3: 'Active Warriors',
+                stat4: 'Last Combat',
+                generateBtn: '⚔ PREPARE FOR BATTLE',
+                publishBtn: '🛡 REPORT TO LEONIDAS',
+                loadingText: 'THE PHALANX FORMS... FORGING SPARTAN WARRIORS...',
+                strategies: {
+                    'pyramid': '⛰ THERMOPYLAE ASCENT',
+                    'reverse-pyramid': '⚔ SPEAR THRUST',
+                    'wave': '🌊 SHIELD WALL WAVE',
+                    'flat': '🛡 PHALANX HOLD'
+                },
+                exerciseTypes: {
+                    compound: '⚔ WARRIOR',
+                    isolation: '🎯 PRECISION'
+                },
+                routineMeta: {
+                    duration: '⏱ BATTLE DURATION:',
+                    exercises: '⚔ COMBAT DRILLS:'
+                },
+                strategyLabel: 'BATTLE PLAN:',
+                successMsg: '⚔ WARRIORS READY. TONIGHT WE DINE IN VALHALLA.',
+                publishSuccessMsg: '🛡 BATTLE "{title}" RECORDED IN HISTORY. ID: {id}',
+                errorMsg: '⚠ PATH BLOCKED: ',
+                publishErrorMsg: '⚠ MESSAGE FAILED: ',
+                publishingText: '🛡 REPORTING...',
+                publishedText: '✓ HONORED',
+                toggleIcon: '⚡',
+                toggleText: 'SELECT THEME'
+            },
+            got: {
+                title: 'GAME OF THRONES',
+                subtitle: 'Winter Is Coming • Fire and Blood',
+                configTitle: '🐉 SMALL COUNCIL',
+                configButton: 'ENTER THRONE ROOM',
+                saveConfigBtn: '👑 SEAL THE DECREE',
+                resetConfigBtn: '↻ RESTORE THE REALM',
+                cancelConfigBtn: '✕ DISMISS',
+                stat1: 'Quests Completed',
+                stat2: 'Skills Learned',
+                stat3: 'Active Plots',
+                stat4: 'Last Adventure',
+                generateBtn: '🐉 FORGE YOUR DESTINY',
+                publishBtn: '📜 SEND A RAVEN',
+                loadingText: 'THE COUNCIL CONVENES... A PLAN TAKES SHAPE...',
+                strategies: {
+                    'pyramid': '⛰ THE WALL ASCENT',
+                    'reverse-pyramid': '⚔ DRAGON STRIKE',
+                    'wave': '🌊 TIDES OF WAR',
+                    'flat': '🛡 CASTLE DEFENSE'
+                },
+                exerciseTypes: {
+                    compound: '⚔ HOUSE STRENGTH',
+                    isolation: '🎯 PRECISION STRIKE'
+                },
+                routineMeta: {
+                    duration: '⏱ QUEST DURATION:',
+                    exercises: '⚔ TRIALS:'
+                },
+                strategyLabel: 'STRATEGY:',
+                successMsg: '🐉 YOUR DESTINY AWAITS. REVIEW YOUR PATH TO THE IRON THRONE.',
+                publishSuccessMsg: '📜 RAVEN SENT: "{title}" RECORDED IN THE CITADEL. ID: {id}',
+                errorMsg: '⚠ THE PATH IS BLOCKED: ',
+                publishErrorMsg: '⚠ THE RAVEN WAS INTERCEPTED: ',
+                publishingText: '📜 SENDING RAVEN...',
+                publishedText: '✓ DELIVERED',
                 toggleIcon: '⚡',
                 toggleText: 'SELECT THEME'
             }
